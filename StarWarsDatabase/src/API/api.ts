@@ -7,7 +7,6 @@ export default async function getAPIresults(
     )
     if (response.ok) {
         const json = await response.json()
-        console.log(json)
         return json
     }
     return 'something went wrong'

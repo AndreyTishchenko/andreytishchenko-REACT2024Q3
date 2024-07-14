@@ -1,9 +1,4 @@
-export default interface StateType {
-    Loading: boolean
-    results: null | Array<Planets>
-}
-
-interface Planets {
+export default interface Planets {
     name: string
     diameter: string
     rotation_period: string

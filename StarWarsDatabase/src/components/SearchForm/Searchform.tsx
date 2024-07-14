@@ -1,44 +1,33 @@
-import React, { ChangeEvent, FormEvent } from 'react'
-import StateType from './types'
+import { ChangeEvent, FormEvent, useState } from 'react'
 import PropsType from '../../Types/FunctionalPropsType'
 import './searchForm.css'
 
-export default class SearchForm extends React.Component<PropsType, StateType> {
-    constructor(props: PropsType) {
-        super(props)
-        this.state = { SearchText: localStorage.getItem('SearchText') || '' }
-        this.HandleChange = this.HandleChange.bind(this)
-        this.HandleSubmit = this.HandleSubmit.bind(this)
+export default function SearchForm({ onSearchChange }: PropsType) {
+    const [SearchText, searchtext] = useState(
+        localStorage.getItem('SearchText') || ''
+    )
+    function HandleChange(event: ChangeEvent<HTMLInputElement>) {
+        searchtext(event.target.value as string)
     }
 
-    HandleChange(event: ChangeEvent<HTMLInputElement>) {
-        this.setState({ SearchText: event.target.value })
-    }
-
-    HandleSubmit(event: FormEvent) {
+    function HandleSubmit(event: FormEvent) {
         event.preventDefault()
-        const { SearchText } = this.state
-        const { onSearchChange } = this.props
-        localStorage.setItem('SearchText', SearchText)
-        onSearchChange(SearchText)
+        const SearchText2 = SearchText
+        const SearchChange = onSearchChange
+        localStorage.setItem('SearchText', SearchText2)
+        SearchChange(SearchText)
     }
 
-    render(): React.ReactNode {
-        return (
-            <>
-                <form onSubmit={this.HandleSubmit}>
-                    <input
-                        value={this.state.SearchText}
-                        onChange={this.HandleChange}
-                        className="SearchInput"
-                    ></input>
-                    <input
-                        type="submit"
-                        className="SubmitInput"
-                        value={''}
-                    ></input>
-                </form>
-            </>
-        )
-    }
+    return (
+        <>
+            <form onSubmit={HandleSubmit}>
+                <input
+                    value={SearchText}
+                    onChange={HandleChange}
+                    className="SearchInput"
+                ></input>
+                <input type="submit" className="SubmitInput" value={''}></input>
+            </form>
+        </>
+    )
 }
