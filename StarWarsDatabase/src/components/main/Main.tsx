@@ -1,13 +1,18 @@
 import { useEffect, useState } from 'react'
 import getAPIresults from '../../API/api'
 import IResults from './type'
+import { useSearchParams } from 'react-router-dom'
 import './main.css'
 
 export default function Main({ SearchText }: { SearchText: string }) {
+    if (!localStorage.getItem('CurrentPage')) {
+        localStorage.setItem('CurrentPage', '1')
+    }
     const [Loading, ChangeLoading] = useState<boolean>(false)
     const [APIresults, getResults] = useState<null | IResults>(null)
-    const [pageNumber, changePage] = useState(
-        localStorage.getItem('CurrentPage') || '1'
+    const [RerenderElement, Rerender] = useState(1)
+    const [SearchParams, ChangeSearch] = useSearchParams(
+        String(localStorage.getItem('CurrentPage'))
     )
 
     async function getResult(): Promise<void> {
@@ -17,11 +22,14 @@ export default function Main({ SearchText }: { SearchText: string }) {
             const response = await getAPIresults(
                 localSearch,
                 10,
-                Number(pageNumber)
+                Number(localStorage.getItem('CurrentPage'))
             )
             getResults(response)
         } catch (error) {
-            console.error('Error fetching data:', error)
+            console.error(
+                `Error fetching data: on the page${SearchParams}`,
+                error
+            )
         } finally {
             ChangeLoading(false)
         }
@@ -37,18 +45,25 @@ export default function Main({ SearchText }: { SearchText: string }) {
     function nextPage() {
         if (APIresults?.next !== null) {
             console.log(APIresults?.next)
-            localStorage.setItem('CurrentPage', String(Number(pageNumber) + 1))
-            changePage(localStorage.getItem('CurrentPage') || '2')
-            console.log(pageNumber)
+            localStorage.setItem(
+                'CurrentPage',
+                String(Number(localStorage.getItem('CurrentPage')) + 1)
+            )
             localStorage.removeItem('prevSearchText')
+            Rerender(RerenderElement + 1)
+            ChangeSearch(String(localStorage.getItem('CurrentPage')))
         }
     }
 
     function previousPage() {
         if (APIresults?.previous !== null) {
-            localStorage.setItem('CurrentPage', String(Number(pageNumber) - 1))
-            changePage(localStorage.getItem('CurrentPage') || '2')
+            localStorage.setItem(
+                'CurrentPage',
+                String(Number(localStorage.getItem('CurrentPage')) - 1)
+            )
             localStorage.removeItem('prevSearchText')
+            Rerender(RerenderElement + 1)
+            ChangeSearch(String(localStorage.getItem('CurrentPage')))
         }
     }
     if (Loading === true) {
