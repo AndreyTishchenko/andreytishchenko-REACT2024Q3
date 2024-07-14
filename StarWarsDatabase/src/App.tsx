@@ -1,7 +1,7 @@
 import './App.css'
-import React, { FormEvent } from 'react'
+import React from 'react'
 import MainPage from './pages/MainPage'
-class App extends React.Component<Object, { loading?: boolean }> {
+class App extends React.Component {
     render() {
         return (
             <>
