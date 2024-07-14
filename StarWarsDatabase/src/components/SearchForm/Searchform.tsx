@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent } from 'react'
 // import PropsType from './propsType'
 import StateType from './types'
-import PropsType from './propsType'
+import PropsType from '../../Types/FunctionalPropsType'
 
 export default class SearchForm extends React.Component<PropsType, StateType> {
     constructor(props: PropsType) {
@@ -19,7 +19,7 @@ export default class SearchForm extends React.Component<PropsType, StateType> {
         event.preventDefault()
         const { SearchText } = this.state
         const { onSearchChange } = this.props
-        localStorage.setItem('searchString', SearchText)
+        localStorage.setItem('SearchText', SearchText)
         onSearchChange(SearchText)
     }
 

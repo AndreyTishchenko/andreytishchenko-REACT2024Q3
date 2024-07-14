@@ -1,6 +1,6 @@
 import React from 'react'
 import SearchForm from '../SearchForm/Searchform'
-import PropsType from './PropsType'
+import PropsType from '../../Types/FunctionalPropsType'
 
 export default class Header extends React.Component<PropsType> {
     constructor(props: PropsType) {
