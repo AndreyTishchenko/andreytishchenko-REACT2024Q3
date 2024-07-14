@@ -1,18 +1,25 @@
 import { useEffect, useState } from 'react'
 import getAPIresults from '../../API/api'
-import Planets from './type'
+import IResults from './type'
 import './main.css'
 
 export default function Main({ SearchText }: { SearchText: string }) {
     const [Loading, ChangeLoading] = useState<boolean>(false)
-    const [results, getResults] = useState<null | Array<Planets>>(null)
+    const [APIresults, getResults] = useState<null | IResults>(null)
+    const [pageNumber, changePage] = useState(
+        localStorage.getItem('CurrentPage') || '1'
+    )
 
     async function getResult(): Promise<void> {
         const localSearch = localStorage.getItem('SearchText') || ''
         try {
             ChangeLoading(true)
-            const response = await getAPIresults(localSearch, 10)
-            getResults(response.results)
+            const response = await getAPIresults(
+                localSearch,
+                10,
+                Number(pageNumber)
+            )
+            getResults(response)
         } catch (error) {
             console.error('Error fetching data:', error)
         } finally {
@@ -26,6 +33,24 @@ export default function Main({ SearchText }: { SearchText: string }) {
             getResult()
         }
     })
+
+    function nextPage() {
+        if (APIresults?.next !== null) {
+            console.log(APIresults?.next)
+            localStorage.setItem('CurrentPage', String(Number(pageNumber) + 1))
+            changePage(localStorage.getItem('CurrentPage') || '2')
+            console.log(pageNumber)
+            localStorage.removeItem('prevSearchText')
+        }
+    }
+
+    function previousPage() {
+        if (APIresults?.previous !== null) {
+            localStorage.setItem('CurrentPage', String(Number(pageNumber) - 1))
+            changePage(localStorage.getItem('CurrentPage') || '2')
+            localStorage.removeItem('prevSearchText')
+        }
+    }
     if (Loading === true) {
         return (
             <>
@@ -37,7 +62,7 @@ export default function Main({ SearchText }: { SearchText: string }) {
             </>
         )
     }
-    if (results === null) {
+    if (APIresults === null) {
         return (
             <>
                 <h1>Something went wrong!</h1>
@@ -48,7 +73,7 @@ export default function Main({ SearchText }: { SearchText: string }) {
         <>
             <main>
                 <div className="grid-div">
-                    {results.map((planet) => {
+                    {APIresults.results.map((planet) => {
                         return (
                             <div key={planet.created} className="card">
                                 <h3>{planet.name}</h3>
@@ -82,6 +107,10 @@ export default function Main({ SearchText }: { SearchText: string }) {
                             </div>
                         )
                     })}
+                </div>
+                <div className="navigation">
+                    <button onClick={previousPage}>Previous Page</button>
+                    <button onClick={nextPage}>Next Page</button>
                 </div>
             </main>
         </>

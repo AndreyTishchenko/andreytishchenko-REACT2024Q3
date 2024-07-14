@@ -1,4 +1,10 @@
-export default interface Planets {
+export default interface IResults {
+    count: 60
+    next: 'https://swapi.dev/api/planets/?page=2'
+    previous: null
+    results: Array<Planets>
+}
+interface Planets {
     name: string
     diameter: string
     rotation_period: string
