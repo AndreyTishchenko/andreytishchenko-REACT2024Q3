@@ -1,6 +1,7 @@
 import React from 'react'
 import getAPIresults from '../../API/api'
 import StateType from './type'
+import './main.css'
 
 export default class Main extends React.Component<
     { SearchText: string },
@@ -45,9 +46,11 @@ export default class Main extends React.Component<
         if (this.state.Loading === true) {
             return (
                 <>
-                    <div>
-                        <h1>Loading</h1>
-                    </div>
+                    <main>
+                        <div>
+                            <h1>Loading</h1>
+                        </div>
+                    </main>
                 </>
             )
         }
@@ -60,42 +63,45 @@ export default class Main extends React.Component<
         }
         return (
             <>
-                <div>
-                    {this.state.results.map((planet) => {
-                        return (
-                            <div key={planet.created}>
-                                <h3>{planet.name}</h3>
-                                <p>
-                                    diameter: <span>{planet.diameter}</span>
-                                </p>
-                                <p>
-                                    rotation_period:{' '}
-                                    <span>{planet.rotation_period}</span>
-                                </p>
-                                <p>
-                                    orbital_period:{' '}
-                                    <span>{planet.orbital_period}</span>
-                                </p>
-                                <p>
-                                    gravity: <span>{planet.gravity}</span>
-                                </p>
-                                <p>
-                                    population: <span>{planet.population}</span>
-                                </p>
-                                <p>
-                                    climate: <span>{planet.climate}</span>
-                                </p>
-                                <p>
-                                    terrain: <span>{planet.terrain}</span>
-                                </p>
-                                <p>
-                                    surface_water:{' '}
-                                    <span>{planet.surface_water}</span>
-                                </p>
-                            </div>
-                        )
-                    })}
-                </div>
+                <main>
+                    <div className="grid-div">
+                        {this.state.results.map((planet) => {
+                            return (
+                                <div key={planet.created} className="card">
+                                    <h3>{planet.name}</h3>
+                                    <p>
+                                        diameter: <span>{planet.diameter}</span>
+                                    </p>
+                                    <p>
+                                        rotation_period:{' '}
+                                        <span>{planet.rotation_period}</span>
+                                    </p>
+                                    <p>
+                                        orbital_period:{' '}
+                                        <span>{planet.orbital_period}</span>
+                                    </p>
+                                    <p>
+                                        gravity: <span>{planet.gravity}</span>
+                                    </p>
+                                    <p>
+                                        population:{' '}
+                                        <span>{planet.population}</span>
+                                    </p>
+                                    <p>
+                                        climate: <span>{planet.climate}</span>
+                                    </p>
+                                    <p>
+                                        terrain: <span>{planet.terrain}</span>
+                                    </p>
+                                    <p>
+                                        surface_water:{' '}
+                                        <span>{planet.surface_water}</span>
+                                    </p>
+                                </div>
+                            )
+                        })}
+                    </div>
+                </main>
             </>
         )
     }

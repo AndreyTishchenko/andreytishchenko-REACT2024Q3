@@ -1,11 +1,14 @@
-import './App.css'
+import './index.css'
 import React from 'react'
 import MainPage from './pages/MainPage'
+import ErrorBoundary from './components/error/error'
 class App extends React.Component {
     render() {
         return (
             <>
-                <MainPage></MainPage>
+                <ErrorBoundary>
+                    <MainPage></MainPage>
+                </ErrorBoundary>
             </>
         )
     }

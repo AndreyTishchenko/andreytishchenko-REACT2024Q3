@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent } from 'react'
-// import PropsType from './propsType'
 import StateType from './types'
 import PropsType from '../../Types/FunctionalPropsType'
+import './searchForm.css'
 
 export default class SearchForm extends React.Component<PropsType, StateType> {
     constructor(props: PropsType) {
@@ -30,8 +30,13 @@ export default class SearchForm extends React.Component<PropsType, StateType> {
                     <input
                         value={this.state.SearchText}
                         onChange={this.HandleChange}
+                        className="SearchInput"
                     ></input>
-                    <input type="submit"></input>
+                    <input
+                        type="submit"
+                        className="SubmitInput"
+                        value={''}
+                    ></input>
                 </form>
             </>
         )
