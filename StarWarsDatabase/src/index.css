@@ -1,0 +1,11 @@
+#root {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    color: orange;
+}
+body {
+    background-image: url('https://www.shutterstock.com/shutterstock/videos/268234/thumb/1.jpg?ip=x480');
+}

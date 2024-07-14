@@ -1,0 +1,28 @@
+.card {
+    width: 350px;
+    border: 1px orange solid;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid-div {
+    margin-top: 10px;
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(3, 350px);
+}
+
+@media (max-width: 1096px) and (min-width: 744px) {
+    .grid-div {
+        grid-template-columns: repeat(2, 350px);
+    }
+}
+
+@media (max-width: 744px) {
+    .grid-div {
+        grid-template-columns: repeat(1, 350px);
+    }
+}
