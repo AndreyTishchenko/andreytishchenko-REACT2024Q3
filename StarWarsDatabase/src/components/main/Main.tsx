@@ -4,6 +4,7 @@ import IResults from '../../Types/ApiResultsType'
 import './main.css'
 import Pagination from '../pagination/Pagination'
 import IPropsType from './type'
+import CardsList from '../CardsList/CardsList'
 
 export default function Main(props: IPropsType) {
     const [Loading, ChangeLoading] = useState<boolean>(false)
@@ -62,47 +63,7 @@ export default function Main(props: IPropsType) {
         return (
             <>
                 <main>
-                    <div className="grid-div">
-                        {APIresults.results.map((planet, index) => {
-                            return (
-                                <div
-                                    key={String(index + 1)}
-                                    className={String(index + 1)}
-                                >
-                                    <h3>{planet.name}</h3>
-                                    <p>
-                                        diameter: <span>{planet.diameter}</span>
-                                    </p>
-                                    <p>
-                                        rotation_period:{' '}
-                                        <span>{planet.rotation_period}</span>
-                                    </p>
-                                    <p>
-                                        orbital_period:{' '}
-                                        <span>{planet.orbital_period}</span>
-                                    </p>
-                                    <p>
-                                        gravity: <span>{planet.gravity}</span>
-                                    </p>
-                                    <p>
-                                        population:{' '}
-                                        <span>{planet.population}</span>
-                                    </p>
-
-                                    <p>
-                                        climate: <span>{planet.climate}</span>
-                                    </p>
-                                    <p>
-                                        terrain: <span>{planet.terrain}</span>
-                                    </p>
-                                    <p>
-                                        surface_water:{' '}
-                                        <span>{planet.surface_water}</span>
-                                    </p>
-                                </div>
-                            )
-                        })}
-                    </div>
+                    <CardsList ApiResults={APIresults}></CardsList>
                     <Pagination
                         APIresults={APIresults}
                         Rerender={Rerender}
@@ -115,59 +76,7 @@ export default function Main(props: IPropsType) {
     return (
         <>
             <main>
-                <div className="grid-div">
-                    {APIresults.results.map((planet, index) => {
-                        return (
-                            <div
-                                key={String(
-                                    index +
-                                        1 +
-                                        Number(
-                                            localStorage.getItem('CurrentPage')
-                                        ) *
-                                            10
-                                )}
-                                className={String(
-                                    index +
-                                        1 +
-                                        Number(
-                                            localStorage.getItem('CurrentPage')
-                                        ) *
-                                            10
-                                )}
-                            >
-                                <h3>{planet.name}</h3>
-                                <p>
-                                    diameter: <span>{planet.diameter}</span>
-                                </p>
-                                <p>
-                                    rotation_period:{' '}
-                                    <span>{planet.rotation_period}</span>
-                                </p>
-                                <p>
-                                    orbital_period:{' '}
-                                    <span>{planet.orbital_period}</span>
-                                </p>
-                                <p>
-                                    gravity: <span>{planet.gravity}</span>
-                                </p>
-                                <p>
-                                    population: <span>{planet.population}</span>
-                                </p>
-                                <p>
-                                    climate: <span>{planet.climate}</span>
-                                </p>
-                                <p>
-                                    terrain: <span>{planet.terrain}</span>
-                                </p>
-                                <p>
-                                    surface_water:{' '}
-                                    <span>{planet.surface_water}</span>
-                                </p>
-                            </div>
-                        )
-                    })}
-                </div>
+                <CardsList ApiResults={APIresults}></CardsList>
                 <Pagination
                     APIresults={APIresults}
                     Rerender={Rerender}
