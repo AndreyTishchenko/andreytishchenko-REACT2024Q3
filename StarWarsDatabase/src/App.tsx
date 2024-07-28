@@ -1,22 +1,20 @@
 import './index.css'
 import MainPage from './pages/MainPage'
 import ErrorBoundary from './components/error/error'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+
 import './index.css'
 import ErrorPage from './pages/errorPage'
-
-const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <MainPage></MainPage>,
-        errorElement: <ErrorPage />,
-    },
-])
 function App() {
     return (
         <>
             <ErrorBoundary>
-                <RouterProvider router={router} />
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/" element={<MainPage />}></Route>
+                        <Route path="*" element={<ErrorPage />} />
+                    </Routes>
+                </BrowserRouter>
             </ErrorBoundary>
         </>
     )

@@ -13,7 +13,7 @@ export default function Header({ onSearchChange }: PropsType) {
     }
     return (
         <>
-            <header>
+            <header role="header">
                 <div>
                     <button onClick={Crash}>Crach System</button>
                 </div>
