@@ -1,14 +1,14 @@
 export default async function getAPIresults(
     searchValue: string,
-    perPage: number,
     pageNumber: number
 ) {
     const response = await fetch(
-        `https://swapi.dev/api/planets/?search=${searchValue}&limit=${perPage}&page=${pageNumber}`
+        `https://swapi.dev/api/planets/?search=${searchValue}&limit=10&page=${pageNumber}`
     )
-    if (response.ok) {
-        const json = await response.json()
-        return json
+    if (!(response.ok)) {
+        throw Error
+
     }
-    return 'something went wrong'
+    const json = await response.json()
+    return json
 }

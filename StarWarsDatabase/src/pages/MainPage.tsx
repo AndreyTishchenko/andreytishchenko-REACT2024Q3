@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import Header from '../components/header/Header'
-import Main from '../components/main/Main'
+import MainDiv from '../components/main/Main'
 import Footer from '../components/footer/Footer'
 import { useSearchParams } from 'react-router-dom'
 
 export default function MainPage() {
+    localStorage.removeItem('chosenItemId');
     const [SearchText, changeText] = useState<string>(
         localStorage.getItem('SearchText') || ''
     )
@@ -16,13 +17,16 @@ export default function MainPage() {
     }
     function handleSearchChange(value: string) {
         changeText(value)
+        ChangeUrl('1');
     }
     localStorage.removeItem('prevSearchText')
     return (
         <>
-            <Header onSearchChange={handleSearchChange}></Header>
-            <Main SearchText={SearchText} ChangeUrl={ChangeUrl}></Main>
-            <Footer></Footer>
+            <div role='mainPage'>
+                <Header onSearchChange={handleSearchChange}></Header>
+                <MainDiv SearchText={SearchText} ChangeUrl={ChangeUrl}></MainDiv>
+                <Footer></Footer>
+            </div>
         </>
     )
 }

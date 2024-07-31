@@ -1,3 +1,6 @@
+/* main{
+    display: flex;
+} */
 .card {
     width: 350px;
     border: 1px orange solid;
@@ -6,6 +9,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    color: orange;
 }
 
 .grid-div {
@@ -15,14 +19,16 @@
     grid-template-columns: repeat(3, 350px);
 }
 
-@media (max-width: 1096px) and (min-width: 744px) {
+@media (max-width: 1628px) and (min-width: 1208px) {
     .grid-div {
         grid-template-columns: repeat(2, 350px);
     }
 }
 
-@media (max-width: 744px) {
+@media (max-width: 1208px) {
     .grid-div {
-        grid-template-columns: repeat(1, 350px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 }

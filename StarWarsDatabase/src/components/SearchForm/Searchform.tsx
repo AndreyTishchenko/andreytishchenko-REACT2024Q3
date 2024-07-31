@@ -7,6 +7,7 @@ export default function SearchForm({ onSearchChange }: PropsType) {
     const [SearchText, searchtext] = useState(
         localStorage.getItem('SearchText') || ''
     )
+
     function HandleChange(event: ChangeEvent<HTMLInputElement>) {
         searchtext(event.target.value as string)
     }

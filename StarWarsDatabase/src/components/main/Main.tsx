@@ -16,7 +16,6 @@ export default function Main(props: IPropsType) {
             ChangeLoading(true)
             const response = await getAPIresults(
                 localSearch,
-                10,
                 Number(localStorage.getItem('CurrentPage'))
             )
             getResults(response)
@@ -43,7 +42,7 @@ export default function Main(props: IPropsType) {
     if (Loading === true) {
         return (
             <>
-                <main>
+                <main role='main'>
                     <div>
                         <h1>Loading</h1>
                     </div>
@@ -62,7 +61,7 @@ export default function Main(props: IPropsType) {
     if (Number(localStorage.getItem('CurrentPage')) == 1) {
         return (
             <>
-                <main>
+                <main role='main'>
                     <CardsList ApiResults={APIresults}></CardsList>
                     <Pagination
                         APIresults={APIresults}
@@ -75,7 +74,7 @@ export default function Main(props: IPropsType) {
     }
     return (
         <>
-            <main>
+            <main role='main'>
                 <CardsList ApiResults={APIresults}></CardsList>
                 <Pagination
                     APIresults={APIresults}
