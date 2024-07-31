@@ -6,11 +6,13 @@ const Child = () => {
 }
 describe('group', () => {
     it('should', () => {
-        render(<>
-        <ErrorBoundary>
-            <Child />
-        </ErrorBoundary>
-        </>)
+        render(
+            <>
+                <ErrorBoundary>
+                    <Child />
+                </ErrorBoundary>
+            </>
+        )
         const heading: HTMLElement = screen.getByRole('heading')
         expect(heading).toBeInTheDocument()
         expect(heading).toHaveTextContent(/Something went wrong./i)

@@ -3,6 +3,5 @@ export default defineConfig({
     test: {
         environment: 'global',
         globals: 'true',
-
     },
 })

@@ -42,7 +42,7 @@ export default function Main(props: IPropsType) {
     if (Loading === true) {
         return (
             <>
-                <main role='main'>
+                <main role="main">
                     <div>
                         <h1>Loading</h1>
                     </div>
@@ -61,7 +61,7 @@ export default function Main(props: IPropsType) {
     if (Number(localStorage.getItem('CurrentPage')) == 1) {
         return (
             <>
-                <main role='main'>
+                <main role="main">
                     <CardsList ApiResults={APIresults}></CardsList>
                     <Pagination
                         APIresults={APIresults}
@@ -74,7 +74,7 @@ export default function Main(props: IPropsType) {
     }
     return (
         <>
-            <main role='main'>
+            <main role="main">
                 <CardsList ApiResults={APIresults}></CardsList>
                 <Pagination
                     APIresults={APIresults}

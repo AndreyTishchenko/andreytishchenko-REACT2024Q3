@@ -10,7 +10,7 @@ export default function Card(prop: { index: string; planet: IPlanet }) {
                         Number(localStorage.getItem('CurrentPage')) * 10
                 )}
                 className={'card'}
-                role='card'
+                role="card"
             >
                 <h3>{prop.planet.name}</h3>
                 <p>

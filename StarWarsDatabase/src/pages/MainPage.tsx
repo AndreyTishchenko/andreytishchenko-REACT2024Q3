@@ -5,7 +5,7 @@ import Footer from '../components/footer/Footer'
 import { useSearchParams } from 'react-router-dom'
 
 export default function MainPage() {
-    localStorage.removeItem('chosenItemId');
+    localStorage.removeItem('chosenItemId')
     const [SearchText, changeText] = useState<string>(
         localStorage.getItem('SearchText') || ''
     )
@@ -17,14 +17,17 @@ export default function MainPage() {
     }
     function handleSearchChange(value: string) {
         changeText(value)
-        ChangeUrl('1');
+        ChangeUrl('1')
     }
     localStorage.removeItem('prevSearchText')
     return (
         <>
-            <div role='mainPage'>
+            <div role="mainPage">
                 <Header onSearchChange={handleSearchChange}></Header>
-                <MainDiv SearchText={SearchText} ChangeUrl={ChangeUrl}></MainDiv>
+                <MainDiv
+                    SearchText={SearchText}
+                    ChangeUrl={ChangeUrl}
+                ></MainDiv>
                 <Footer></Footer>
             </div>
         </>

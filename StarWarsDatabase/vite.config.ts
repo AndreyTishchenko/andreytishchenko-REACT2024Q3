@@ -8,7 +8,7 @@ export default defineConfig({
         globals: true,
         environment: 'jsdom',
         coverage: {
-            exclude: ['src/main.tsx/**']
+            exclude: ['src/main.tsx/**'],
         },
     },
 })

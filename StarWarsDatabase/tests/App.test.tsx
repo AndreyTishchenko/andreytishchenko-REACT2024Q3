@@ -4,7 +4,7 @@ import App from '../src/App'
 describe('group', () => {
     it('should', () => {
         render(<App />)
-        const MainPage = screen.getByRole('mainPage');
-        expect(MainPage).toBeInTheDocument();
+        const MainPage = screen.getByRole('mainPage')
+        expect(MainPage).toBeInTheDocument()
     })
 })
