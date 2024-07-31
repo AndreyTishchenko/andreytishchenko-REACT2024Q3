@@ -1,0 +1,12 @@
+header {
+    height: 168.75px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: orange solid 2px;
+}
+
+.StarWarsLogo {
+    width: 200px;
+    height: 112.5px;
+}
