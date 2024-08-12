@@ -2,7 +2,8 @@ import { render, screen } from '@testing-library/react'
 import Pagination from '../../src/components/pagination/Pagination'
 import '@testing-library/jest-dom/vitest'
 import IResults from '../../src/Types/ApiResultsType'
-function a() {}
+import { describe, expect, it } from 'vitest'
+import React from 'react'
 function b() {}
 const MockAPI: IResults = {
     count: 60,
@@ -145,7 +146,7 @@ const MockAPI: IResults = {
 }
 describe('group', () => {
     it('should', () => {
-        render(<Pagination APIresults={MockAPI} Rerender={a} ChangeUrl={b} />)
+        render(<Pagination APIresults={MockAPI} ChangeUrl={b} />)
         const buttons = screen.getAllByRole('button')
         expect(buttons[0]).toHaveTextContent('Previous Page')
         expect(buttons[1]).toHaveTextContent('Next Page')

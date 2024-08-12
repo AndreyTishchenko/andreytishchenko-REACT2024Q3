@@ -2,6 +2,8 @@ import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom/vitest'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import MainPage from '../../src/pages/MainPage'
+import { describe, expect, it } from 'vitest'
+import React from 'react'
 describe('group', () => {
     it('should', () => {
         render(

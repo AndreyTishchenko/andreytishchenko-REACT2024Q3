@@ -2,6 +2,8 @@ import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom/vitest'
 import CardsList from '../../src/components/CardsList/CardsList'
 import IResults from '../../src/Types/ApiResultsType'
+import { describe, expect, it } from 'vitest'
+import React from 'react'
 describe('group', () => {
     const MockAPI: IResults = {
         count: 60,

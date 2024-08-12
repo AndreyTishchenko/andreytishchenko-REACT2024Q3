@@ -2,6 +2,8 @@ import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom/vitest'
 import IPlanet from '../../src/Types/PlanetType'
 import Card from '../../src/components/card/card'
+import { describe, expect, it } from 'vitest'
+import React from 'react'
 describe('group', () => {
     it('should', () => {
         const Planet: IPlanet = {
