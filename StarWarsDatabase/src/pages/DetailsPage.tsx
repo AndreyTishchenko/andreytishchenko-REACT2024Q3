@@ -4,7 +4,7 @@ import MainDiv from '../components/main/Main'
 import Footer from '../components/footer/Footer'
 import { useSearchParams } from 'react-router-dom'
 
-export default function MainPage() {
+export default function DetailsPage() {
     console.log(localStorage.getItem('CurrentPage'))
     const [SearchText, changeText] = useState<string>(
         localStorage.getItem('SearchText') || ''
@@ -38,7 +38,7 @@ export default function MainPage() {
         <>
             <div role="mainPage">
                 <Header onSearchChange={handleSearchChange}></Header>
-                <main role="main">
+                <main>
                     <MainDiv
                         SearchText={SearchText}
                         ChangeUrl={ChangePage}

@@ -3,15 +3,7 @@ import IPlanet from '../../Types/PlanetType'
 export default function Card(prop: { index: string; planet: IPlanet }) {
     return (
         <>
-            <div
-                key={String(
-                    prop.index +
-                        1 +
-                        Number(localStorage.getItem('CurrentPage')) * 10
-                )}
-                className={'card'}
-                role="card"
-            >
+            <div key={String(prop.index)} className={'card'} role="card">
                 <h3>{prop.planet.name}</h3>
                 <p>
                     diameter: <span>{prop.planet.diameter}</span>
