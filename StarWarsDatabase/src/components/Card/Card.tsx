@@ -1,8 +1,18 @@
+import { Link } from 'react-router'
 import { Planet } from '../main/type'
 import './Card.css'
 export default function Card(props: { planet: Planet }): React.ReactNode {
+    function getId(url: string) {
+        const parts = url.split('/')
+        return parts[parts.length - 2]
+    }
+
     return (
-        <div className="card">
+        <Link
+            className="card"
+            id={getId(props.planet.url)}
+            to={`/details?card=${getId(props.planet.url)}`}
+        >
             <h3>{props.planet.name}</h3>
             <p>
                 diameter: <span>{props.planet.diameter}</span>
@@ -28,6 +38,6 @@ export default function Card(props: { planet: Planet }): React.ReactNode {
             <p>
                 surface_water: <span>{props.planet.surface_water}</span>
             </p>
-        </div>
+        </Link>
     )
 }

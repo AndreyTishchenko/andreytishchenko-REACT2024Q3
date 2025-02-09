@@ -1,35 +1,40 @@
-import { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useState, useEffect } from 'react'
 import PropsType from '../../Types/FunctionalPropsType'
 import './searchForm.css'
 
 export default function SearchForm(props: PropsType) {
-    const [searchText, ChangeSearchText] = useState(
-        localStorage.getItem('SearchText') || ''
-    )
+    const [searchText, setSearchText] = useState('')
 
-    function HandleChange(event: ChangeEvent<HTMLInputElement>) {
-        ChangeSearchText(event.target.value)
+    useEffect(() => {
+        const savedText = localStorage.getItem('SearchText')
+        if (savedText) {
+            setSearchText(savedText.replace(/^"(.*)"$/, '$1'))
+        }
+    }, [])
+
+    function handleChange(event: ChangeEvent<HTMLInputElement>) {
+        setSearchText(event.target.value)
     }
 
-    function HandleSubmit(event: FormEvent) {
+    function handleSubmit(event: FormEvent) {
         event.preventDefault()
-        const SearchText = searchText
-        console.log(props.onSearchChange)
         const { onSearchChange } = props
-        localStorage.setItem('SearchText', SearchText)
-        onSearchChange(SearchText)
+        localStorage.setItem('SearchText', searchText)
+        if (onSearchChange) {
+            onSearchChange(searchText)
+        }
     }
 
     return (
-        <>
-            <form onSubmit={HandleSubmit}>
-                <input
-                    value={searchText}
-                    onChange={HandleChange}
-                    className="SearchInput"
-                ></input>
-                <input type="submit" className="SubmitInput" value={''}></input>
-            </form>
-        </>
+        <form onSubmit={handleSubmit}>
+            <input
+                value={searchText}
+                onChange={handleChange}
+                className="SearchInput"
+            />
+            <button type="submit" className="SubmitInput">
+                Search
+            </button>
+        </form>
     )
 }

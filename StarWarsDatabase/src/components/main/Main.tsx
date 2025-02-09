@@ -2,11 +2,7 @@ import React from 'react'
 import './main.css'
 import './main.css'
 import CardList from '../CardsList/CradsList'
-
-// export default function Main(){
-
-// }
-
+import { Outlet } from 'react-router'
 const Main = React.memo(function ({
     SearchText,
 }: {
@@ -17,6 +13,7 @@ const Main = React.memo(function ({
         <>
             <main>
                 <CardList searchText={SearchText}></CardList>
+                <Outlet />
             </main>
         </>
     )
