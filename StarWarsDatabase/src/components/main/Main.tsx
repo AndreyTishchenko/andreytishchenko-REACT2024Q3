@@ -7,16 +7,19 @@ import CardList from '../CardsList/CradsList'
 
 // }
 
-const Main =  React.memo( function({ SearchText }: {SearchText: string}):React.ReactNode {
-    console.log("newRender")
+const Main = React.memo(function ({
+    SearchText,
+}: {
+    SearchText: string
+}): React.ReactNode {
+    console.log('newRender')
     return (
         <>
             <main>
-                <CardList searchText = {SearchText}></CardList>
+                <CardList searchText={SearchText}></CardList>
             </main>
         </>
     )
 })
 
 export default Main
-

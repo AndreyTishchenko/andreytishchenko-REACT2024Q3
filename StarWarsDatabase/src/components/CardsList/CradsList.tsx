@@ -1,35 +1,35 @@
-import { Suspense, useEffect, useState } from 'react';
-import Result from '../../API/interface';
-import getAPIresults from '../../API/api';
-import ErrorBoundary from '../error/error';
-import Card from '../Card/Card';
+import { Suspense, useEffect, useState } from 'react'
+import Result from '../../API/interface'
+import getAPIresults from '../../API/api'
+import ErrorBoundary from '../error/error'
+import Card from '../Card/Card'
 
 export default function CardList({ searchText }: { searchText: string }) {
-    const [planetList, setPlanetList] = useState<Result | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [planetList, setPlanetList] = useState<Result | null>(null)
+    const [isLoading, setIsLoading] = useState<boolean>(true)
 
     useEffect(() => {
         const fetchData = async () => {
-            setIsLoading(true);
+            setIsLoading(true)
             try {
-                const results = await getAPIresults(searchText, 10); // Assuming getAPIresults returns a Promise
-                setPlanetList(results);
+                const results = await getAPIresults(searchText, 10) // Assuming getAPIresults returns a Promise
+                setPlanetList(results)
             } catch (error) {
-                console.error("Failed to fetch data:", error);
+                console.error('Failed to fetch data:', error)
             } finally {
-                setIsLoading(false);
+                setIsLoading(false)
             }
-        };
+        }
 
-        fetchData();
-    }, [searchText]);
+        fetchData()
+    }, [searchText])
 
     if (isLoading) {
-        return <Loading />;
+        return <Loading />
     }
 
     if (!planetList || !planetList.results.length) {
-        return <div>No planets found.</div>;
+        return <div>No planets found.</div>
     }
 
     return (
@@ -37,12 +37,12 @@ export default function CardList({ searchText }: { searchText: string }) {
             <Suspense>
                 <div className="grid-div">
                     {planetList.results.map((planet, index) => (
-                        <Card planet = {planet} key={index}/>
+                        <Card planet={planet} key={index} />
                     ))}
                 </div>
             </Suspense>
         </ErrorBoundary>
-    );
+    )
 }
 
 function Loading() {
@@ -50,5 +50,5 @@ function Loading() {
         <div>
             <h2>Loading...</h2>
         </div>
-    );
+    )
 }

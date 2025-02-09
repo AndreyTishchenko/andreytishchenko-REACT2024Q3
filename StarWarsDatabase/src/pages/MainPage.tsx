@@ -3,8 +3,10 @@ import Header from '../components/header/Header'
 import Main from '../components/main/Main'
 import Footer from '../components/footer/Footer'
 
-export default function MainPage(){
-    let [SearchText, ChangeSearchText] = useState(localStorage.getItem('SearchText') || '')
+export default function MainPage() {
+    const [SearchText, ChangeSearchText] = useState(
+        localStorage.getItem('SearchText') || ''
+    )
     function handleSearchChange(value: string) {
         ChangeSearchText(value)
     }
@@ -16,5 +18,4 @@ export default function MainPage(){
             <Footer></Footer>
         </>
     )
-
 }

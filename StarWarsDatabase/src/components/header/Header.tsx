@@ -1,18 +1,17 @@
-
-import { useState } from 'react';
-import SearchForm from '../SearchForm/Searchform';
+import { useState } from 'react'
+import SearchForm from '../SearchForm/Searchform'
 import PropsType from '../../Types/FunctionalPropsType'
-import './header.css';
+import './header.css'
 
 export default function Header(props: PropsType) {
-    const [isError, setError] = useState(false);
+    const [isError, setError] = useState(false)
 
     function Crash() {
-        setError(true);
+        setError(true)
     }
 
     if (isError) {
-        throw new Error('Throw error by button');
+        throw new Error('Throw error by button')
     }
 
     return (
@@ -29,5 +28,5 @@ export default function Header(props: PropsType) {
             </div>
             <SearchForm onSearchChange={props.onSearchChange} />
         </header>
-    );
+    )
 }

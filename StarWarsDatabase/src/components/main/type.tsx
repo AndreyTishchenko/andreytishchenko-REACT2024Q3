@@ -1,5 +1,5 @@
 export interface StateType {
-    url: string;
+    url: string
 }
 
 export interface Planet {
