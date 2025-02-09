@@ -1,12 +1,10 @@
-import { useState } from 'react'
 import Header from '../components/header/Header'
 import Main from '../components/main/Main'
 import Footer from '../components/footer/Footer'
+import useSearchQuery from '../hooks/myCustomHook'
 
 export default function MainPage() {
-    const [SearchText, ChangeSearchText] = useState(
-        localStorage.getItem('SearchText') || ''
-    )
+    const [SearchText, ChangeSearchText] = useSearchQuery('SearchText', '')
     function handleSearchChange(value: string) {
         ChangeSearchText(value)
     }

@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Result from '../../API/interface'
 import getAPIresults from '../../API/api'
 import ErrorBoundary from '../error/error'
@@ -34,13 +34,11 @@ export default function CardList({ searchText }: { searchText: string }) {
 
     return (
         <ErrorBoundary>
-            <Suspense>
-                <div className="grid-div">
-                    {planetList.results.map((planet, index) => (
-                        <Card planet={planet} key={index} />
-                    ))}
-                </div>
-            </Suspense>
+            <div className="grid-div">
+                {planetList.results.map((planet, index) => (
+                    <Card planet={planet} key={index} />
+                ))}
+            </div>
         </ErrorBoundary>
     )
 }
