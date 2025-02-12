@@ -1,7 +1,10 @@
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import { Planet } from '../main/type'
 import './Card.css'
-export default function Card(props: { planet: Planet }): React.ReactNode {
+export default function Card(props: {
+    planet: Planet
+    SetCardId: React.Dispatch<React.SetStateAction<string>>
+}): React.ReactNode {
     function getId(url: string) {
         const parts = url.split('/')
         return parts[parts.length - 2]
@@ -21,19 +24,10 @@ export default function Card(props: { planet: Planet }): React.ReactNode {
                 rotation_period: <span>{props.planet.rotation_period}</span>
             </p>
             <p>
-                orbital_period: <span>{props.planet.orbital_period}</span>
-            </p>
-            <p>
                 gravity: <span>{props.planet.gravity}</span>
             </p>
             <p>
                 population: <span>{props.planet.population}</span>
-            </p>
-            <p>
-                climate: <span>{props.planet.climate}</span>
-            </p>
-            <p>
-                terrain: <span>{props.planet.terrain}</span>
             </p>
             <p>
                 surface_water: <span>{props.planet.surface_water}</span>

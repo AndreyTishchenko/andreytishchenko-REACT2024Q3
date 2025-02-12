@@ -1,24 +1,33 @@
 import { useEffect, useState } from 'react'
 import Result from '../../API/interface'
-import getAPIresults from '../../API/api'
+import { getPlanets } from '../../API/api'
 import ErrorBoundary from '../error/error'
 import Card from '../Card/Card'
-import { useSearchParams } from 'react-router'
+import { useLocation, useSearchParams } from 'react-router'
 
 export default function CardList({ searchText }: { searchText: string }) {
     const [planetList, setPlanetList] = useState<Result | null>(null)
     const [isLoading, setIsLoading] = useState<boolean>(true)
-    const [pageNumber, changePage] = useState(
-        localStorage.getItem('CurrentPage') || '1'
-    )
-    const setSearchParams = useSearchParams()[1]
+    const [SearchParams, setSearchParams] = useSearchParams()
+    const location = useLocation()
 
+    const [pageNumber, changePage] = useState(SearchParams.get('page') || '1')
+
+    const [CardId, setCardId] = useState(SearchParams.get('card') || '')
     useEffect(() => {
-        setSearchParams({ page: pageNumber })
+        setSearchParams((prevParams) => {
+            const newParams = new URLSearchParams(prevParams)
+            newParams.set('page', pageNumber) // Update page param
+            if (CardId !== '' && String(location) == '/details') {
+                newParams.set('card', CardId) // Add or update card param
+            }
+            return newParams
+        })
+
         const fetchData = async () => {
             setIsLoading(true)
             try {
-                const results = await getAPIresults(
+                const results = await getPlanets(
                     searchText,
                     10,
                     JSON.parse(pageNumber)
@@ -32,13 +41,12 @@ export default function CardList({ searchText }: { searchText: string }) {
         }
 
         fetchData()
-    }, [searchText, pageNumber, setSearchParams])
+    }, [searchText, pageNumber, CardId, setSearchParams, location])
 
     function nextPage() {
         if (planetList?.next !== null) {
             console.log(planetList?.next)
-            localStorage.setItem('CurrentPage', String(Number(pageNumber) + 1))
-            changePage(localStorage.getItem('CurrentPage') || '2')
+            changePage(String(Number(pageNumber) + 1))
             console.log(pageNumber)
             localStorage.removeItem('prevSearchText')
         }
@@ -46,8 +54,7 @@ export default function CardList({ searchText }: { searchText: string }) {
 
     function previousPage() {
         if (planetList?.previous !== null) {
-            localStorage.setItem('CurrentPage', String(Number(pageNumber) - 1))
-            changePage(localStorage.getItem('CurrentPage') || '2')
+            changePage(String(Number(pageNumber) - 1))
             localStorage.removeItem('prevSearchText')
         }
     }
@@ -62,14 +69,20 @@ export default function CardList({ searchText }: { searchText: string }) {
 
     return (
         <ErrorBoundary>
-            <div className="grid-div">
-                {planetList.results.map((planet, index) => (
-                    <Card planet={planet} key={index} />
-                ))}
-            </div>
-            <div className="navigation">
-                <button onClick={previousPage}>Previous Page</button>
-                <button onClick={nextPage}>Next Page</button>
+            <div className="CardList">
+                <div className="grid-div">
+                    {planetList.results.map((planet, index) => (
+                        <Card
+                            planet={planet}
+                            key={index}
+                            SetCardId={setCardId}
+                        />
+                    ))}
+                </div>
+                <div className="navigation">
+                    <button onClick={previousPage}>Previous Page</button>
+                    <button onClick={nextPage}>Next Page</button>
+                </div>
             </div>
         </ErrorBoundary>
     )

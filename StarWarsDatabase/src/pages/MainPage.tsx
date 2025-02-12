@@ -6,7 +6,6 @@ import useSearchQuery from '../hooks/myCustomHook'
 
 export default function MainPage() {
     const [SearchText, ChangeSearchText] = useSearchQuery('SearchText', '')
-    // const [searchParams, SetSearchParams] = useSearchParams();
 
     function handleSearchChange(value: string) {
         ChangeSearchText(value)

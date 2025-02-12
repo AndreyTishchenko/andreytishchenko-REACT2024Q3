@@ -2,16 +2,24 @@ import React from 'react'
 import './main.css'
 import './main.css'
 import CardList from '../CardsList/CradsList'
-import { Outlet } from 'react-router'
+import { Outlet, useLocation } from 'react-router'
 const Main = React.memo(function ({
     SearchText,
 }: {
     SearchText: string
 }): React.ReactNode {
+    const location = useLocation()
+    const isDetailsPage = location.pathname === '/details'
     console.log('newRender')
     return (
         <>
-            <main>
+            <main
+                style={{
+                    display: 'flex',
+                    justifyContent: isDetailsPage ? 'space-between' : 'center',
+                    width: '97.2%',
+                }}
+            >
                 <CardList searchText={SearchText}></CardList>
                 <Outlet />
             </main>

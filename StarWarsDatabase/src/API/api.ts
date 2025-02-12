@@ -1,5 +1,6 @@
 import Result from './interface'
-export default async function getAPIresults(
+import { Planet } from '../components/main/type'
+export async function getPlanets(
     searchValue: string,
     perPage: number,
     pageNumber: number
@@ -10,6 +11,16 @@ export default async function getAPIresults(
     if (response.ok) {
         const json = await response.json()
         console.log(json)
+        return json
+    } else {
+        return null
+    }
+}
+
+export async function getPlanet(id: string): Promise<Planet | null> {
+    const response = await fetch(`https://swapi.dev/api/planets/${id}`)
+    if (response.ok) {
+        const json = await response.json()
         return json
     } else {
         return null
