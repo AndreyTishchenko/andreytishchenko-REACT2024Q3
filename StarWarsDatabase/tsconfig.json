@@ -1,11 +1,14 @@
 {
     "files": [],
     "references": [
-        {
-            "path": "./tsconfig.app.json"
-        },
-        {
-            "path": "./tsconfig.node.json"
-        }
-    ]
+        { "path": "./tsconfig.app.json" },
+        { "path": "./tsconfig.node.json" }
+    ],
+    "compilerOptions": {
+        "types": ["vitest/globals"], // Ensures Vitest globals (e.g., `describe`, `test`) are recognized
+        "module": "ESNext",
+        "target": "ESNext",
+        "moduleResolution": "Node",
+        "strict": true
+    }
 }

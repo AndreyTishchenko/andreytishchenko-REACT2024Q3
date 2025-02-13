@@ -3,7 +3,7 @@ import Result from '../../API/interface'
 import { getPlanets } from '../../API/api'
 import ErrorBoundary from '../error/error'
 import Card from '../Card/Card'
-import { useLocation, useSearchParams } from 'react-router'
+import { useLocation, useSearchParams } from 'react-router-dom'
 
 export default function CardList({ searchText }: { searchText: string }) {
     const [planetList, setPlanetList] = useState<Result | null>(null)
@@ -15,14 +15,20 @@ export default function CardList({ searchText }: { searchText: string }) {
 
     const [CardId, setCardId] = useState(SearchParams.get('card') || '')
     useEffect(() => {
-        setSearchParams((prevParams) => {
-            const newParams = new URLSearchParams(prevParams)
-            newParams.set('page', pageNumber) // Update page param
-            if (CardId !== '' && String(location) == '/details') {
-                newParams.set('card', CardId) // Add or update card param
-            }
-            return newParams
-        })
+        // Получаем текущие параметры
+        const currentParams = new URLSearchParams(SearchParams)
+
+        // Создаем новые параметры на основе текущих
+        const newParams = new URLSearchParams(SearchParams)
+        newParams.set('page', pageNumber)
+        if (CardId !== '' && String(location) === '/details') {
+            newParams.set('card', CardId)
+        }
+
+        // Если параметры изменились, вызываем setSearchParams
+        if (newParams.toString() !== currentParams.toString()) {
+            setSearchParams(newParams)
+        }
 
         const fetchData = async () => {
             setIsLoading(true)
@@ -41,7 +47,14 @@ export default function CardList({ searchText }: { searchText: string }) {
         }
 
         fetchData()
-    }, [searchText, pageNumber, CardId, setSearchParams, location])
+    }, [
+        searchText,
+        pageNumber,
+        CardId,
+        setSearchParams,
+        SearchParams,
+        location,
+    ])
 
     function nextPage() {
         if (planetList?.next !== null) {
