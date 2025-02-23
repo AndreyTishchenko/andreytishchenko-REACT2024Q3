@@ -4,6 +4,8 @@ import { getPlanets } from '../../API/api'
 import ErrorBoundary from '../error/error'
 import Card from '../Card/Card'
 import { useLocation, useSearchParams } from 'react-router-dom'
+import FlyoutElement from '../FlyoutElement/FlyoutElement'
+import { useAppSelector } from '../../hooks/redux'
 
 export default function CardList({ searchText }: { searchText: string }) {
     const [planetList, setPlanetList] = useState<Result | null>(null)
@@ -14,6 +16,7 @@ export default function CardList({ searchText }: { searchText: string }) {
     const [pageNumber, changePage] = useState(SearchParams.get('page') || '1')
 
     const [CardId, setCardId] = useState(SearchParams.get('card') || '')
+    const { planets } = useAppSelector((state) => state.planetReducer)
     useEffect(() => {
         // Получаем текущие параметры
         const currentParams = new URLSearchParams(SearchParams)
@@ -97,6 +100,7 @@ export default function CardList({ searchText }: { searchText: string }) {
                     <button onClick={nextPage}>Next Page</button>
                 </div>
             </div>
+            {planets.length > 0 ? <FlyoutElement></FlyoutElement> : <></>}
         </ErrorBoundary>
     )
 }

@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux'
 export default function Card(props: {
     planet: Planet
     SetCardId: React.Dispatch<React.SetStateAction<string>>
-    checked: boolean
 }): React.ReactNode {
     const { planets } = useAppSelector((state) => state.planetReducer)
     const { addPlanet, deletePlanet } = planetsSlice.actions
