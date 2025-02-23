@@ -1,10 +1,19 @@
+import { useContext } from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks/redux'
 import { planetsSlice } from '../../store/reducers/PlanetsSlice'
-
+import { MyContext } from '../myContext/myContext'
+import './style.css'
 export default function FlyoutElement() {
     const { planets } = useAppSelector((state) => state.planetReducer)
     const { deletePlanet } = planetsSlice.actions
     const Dispatch = useAppDispatch()
+
+    const context = useContext(MyContext)
+    if (!context) {
+        throw new Error('Error')
+    }
+
+    const { value } = context
 
     function deleteAll() {
         planets.forEach((planet) => {
@@ -33,7 +42,9 @@ export default function FlyoutElement() {
 
     return (
         <div>
-            <h3>Choosen Elements: {planets.length}</h3>
+            <h3 className={value ? 'light' : ''}>
+                Choosen Elements: {planets.length}
+            </h3>
             <button onClick={deleteAll}>Unselect All</button>
             <button onClick={downloadAllInCSV}>Download All</button>
         </div>

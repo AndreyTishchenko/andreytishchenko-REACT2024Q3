@@ -4,7 +4,11 @@ header {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    border: orange solid 2px;
+    border: red solid 2px;
+}
+
+header.Light {
+    border-color: rgb(0, 183, 255);
 }
 
 .StarWarsLogo {

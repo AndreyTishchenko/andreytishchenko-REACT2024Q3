@@ -7,6 +7,7 @@ import NotFound from './pages/NotFound'
 import DetailsComponent from './components/DetailsComponent/DetailsComponent'
 import { Provider } from 'react-redux'
 import { setupStore } from './store/store'
+import { MyProvider } from './components/myContext/myContext'
 
 const store = setupStore()
 function App(): React.ReactNode {
@@ -14,15 +15,17 @@ function App(): React.ReactNode {
         <>
             <Provider store={store}>
                 <ErrorBoundary>
-                    <Routes>
-                        <Route path="/" element={<MainPage />}>
-                            <Route
-                                path="/details"
-                                element={<DetailsComponent />}
-                            ></Route>
-                        </Route>
-                        <Route path="*" element={<NotFound />}></Route>
-                    </Routes>
+                    <MyProvider>
+                        <Routes>
+                            <Route path="/" element={<MainPage />}>
+                                <Route
+                                    path="/details"
+                                    element={<DetailsComponent />}
+                                ></Route>
+                            </Route>
+                            <Route path="*" element={<NotFound />}></Route>
+                        </Routes>
+                    </MyProvider>
                 </ErrorBoundary>
             </Provider>
         </>

@@ -1,9 +1,16 @@
-import { ChangeEvent, FormEvent, useState, useEffect } from 'react'
+import { ChangeEvent, FormEvent, useState, useEffect, useContext } from 'react'
 import PropsType from '../../Types/FunctionalPropsType'
 import './searchForm.css'
+import { MyContext } from '../myContext/myContext'
 
 export default function SearchForm(props: PropsType) {
     const [searchText, setSearchText] = useState('')
+
+    const context = useContext(MyContext)
+    if (!context) {
+        throw new Error('Error')
+    }
+    const { value } = context
 
     useEffect(() => {
         const savedText = localStorage.getItem('SearchText')
@@ -30,11 +37,12 @@ export default function SearchForm(props: PropsType) {
             <input
                 value={searchText}
                 onChange={handleChange}
-                className="SearchInput"
+                className={'SearchInput' + (value ? ' light' : '')}
             />
-            <button type="submit" className="SubmitInput">
-                Search
-            </button>
+            <button
+                type="submit"
+                className={'SubmitInput' + (value ? ' light' : '')}
+            ></button>
         </form>
     )
 }

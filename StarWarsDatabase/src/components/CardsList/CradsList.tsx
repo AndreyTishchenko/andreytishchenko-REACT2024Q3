@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useSearchParams, useLocation } from 'react-router-dom'
 import ErrorBoundary from '../error/error'
 import Card from '../Card/Card'
 import FlyoutElement from '../FlyoutElement/FlyoutElement'
 import { useAppSelector } from '../../hooks/redux'
 import { useGetPlanetsQuery } from '../../store/reducers/APiCalls'
+import { MyContext } from '../myContext/myContext'
 
 export default function CardList({ searchText }: { searchText: string }) {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -78,9 +79,16 @@ export default function CardList({ searchText }: { searchText: string }) {
 }
 
 function Loading() {
+    const context = useContext(MyContext)
+    if (!context) {
+        throw new Error('Error')
+    }
+
+    const { value } = context
+
     return (
         <div>
-            <h2>Loading...</h2>
+            <h2 color={value ? 'rgb(0, 183, 255)' : ''}>Loading...</h2>
         </div>
     )
 }

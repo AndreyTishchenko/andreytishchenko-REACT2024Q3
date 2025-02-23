@@ -1,13 +1,21 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useContext, useEffect } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useGetPlanetQuery } from '../../store/reducers/APiCalls'
 import './style.css'
+import { MyContext } from '../myContext/myContext'
 
 export default function DetailsComponent() {
     const [searchParams] = useSearchParams()
     const PlanetID = searchParams.get('card') || ''
     const { data: planet, isLoading } = useGetPlanetQuery(PlanetID)
     const navigate = useNavigate()
+
+    const context = useContext(MyContext)
+    if (!context) {
+        throw new Error('Error')
+    }
+
+    const { value } = context
 
     const handleClickOutside = useCallback(
         (event: MouseEvent) => {
@@ -30,9 +38,9 @@ export default function DetailsComponent() {
     return (
         <>
             {isLoading ? (
-                <p>Loading...</p>
+                <p color={value ? 'rgb(0, 183, 255)' : ''}>Loading...</p>
             ) : (
-                <div id="modal" className="modal">
+                <div id="modal" className={'modal' + (value ? ' light' : '')}>
                     <h2>{planet?.name}</h2>
                     <p>Diameter: {planet?.diameter}</p>
                     <p>Rotation Period: {planet?.rotation_period}</p>

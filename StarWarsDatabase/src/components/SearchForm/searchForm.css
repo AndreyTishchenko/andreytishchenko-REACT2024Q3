@@ -2,12 +2,18 @@
     background-color: rgba(124, 23, 62, 0);
     width: 200px;
     height: 50px;
-    border: orange 1px solid;
+    border: red 1px solid;
     border-radius: 100px;
-    color: orange;
+    color: red;
     text-align: center;
     font-size: 20px;
     margin-right: 10px;
+}
+
+.SearchInput.light {
+    background-color: white;
+    border: rgb(0, 183, 255) 1px solid;
+    color: rgb(0, 183, 255);
 }
 
 form {
@@ -16,12 +22,23 @@ form {
 }
 
 .SubmitInput {
-    background-color: rgba(124, 23, 62, 0);
+    background-image: url('../../assets/DarthWader.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    overflow: hidden;
     width: 50px;
     height: 50px;
-    border: orange 1px solid;
+    border: red 1px solid;
     border-radius: 100px;
-    color: orange;
+    color: red;
     text-align: center;
-    background-color: orange;
+    background-color: black;
+}
+
+.SubmitInput.light {
+    background-image: url('../../assets/GalaxyEmpire.svg');
+    border: rgb(0, 183, 255) 1px solid;
+    color: rgb(0, 183, 255);
+    background-color: white;
 }

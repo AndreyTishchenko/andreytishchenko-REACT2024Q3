@@ -3,6 +3,8 @@ import { Planet } from '../main/type'
 import './Card.css'
 import { planetsSlice } from '../../store/reducers/PlanetsSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks/redux'
+import { useContext } from 'react'
+import { MyContext } from '../myContext/myContext'
 export default function Card(props: {
     planet: Planet
     SetCardId: React.Dispatch<React.SetStateAction<string>>
@@ -13,6 +15,13 @@ export default function Card(props: {
     const planetWithCUrrentID = planets.find(
         (planet) => planet.id === getId(props.planet.url)
     )
+
+    const context = useContext(MyContext)
+    if (!context) {
+        throw new Error('Error')
+    }
+
+    const { value } = context
 
     function getId(url: string) {
         const parts = url.split('/')
@@ -32,7 +41,7 @@ export default function Card(props: {
 
     return (
         <Link
-            className="card"
+            className={'card' + (value ? ' light' : '')}
             id={getId(props.planet.url)}
             to={`/details?card=${getId(props.planet.url)}`}
             style={{ position: 'relative' }}

@@ -7,3 +7,7 @@
     width: 50%;
     height: 100%;
 }
+
+.modal.light {
+    color: rgb(0, 183, 255);
+}
