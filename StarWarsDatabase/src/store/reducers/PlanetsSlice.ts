@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-interface Planet {
+export interface Planet {
     id: string
     name: string
     diameter: string
