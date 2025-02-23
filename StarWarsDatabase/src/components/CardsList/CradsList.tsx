@@ -1,75 +1,47 @@
 import { useEffect, useState } from 'react'
-import Result from '../../API/interface'
-import { getPlanets } from '../../API/api'
+import { useSearchParams, useLocation } from 'react-router-dom'
 import ErrorBoundary from '../error/error'
 import Card from '../Card/Card'
-import { useLocation, useSearchParams } from 'react-router-dom'
 import FlyoutElement from '../FlyoutElement/FlyoutElement'
 import { useAppSelector } from '../../hooks/redux'
+import { useGetPlanetsQuery } from '../../store/reducers/APiCalls'
 
 export default function CardList({ searchText }: { searchText: string }) {
-    const [planetList, setPlanetList] = useState<Result | null>(null)
-    const [isLoading, setIsLoading] = useState<boolean>(true)
-    const [SearchParams, setSearchParams] = useSearchParams()
+    const [searchParams, setSearchParams] = useSearchParams()
     const location = useLocation()
-
-    const [pageNumber, changePage] = useState(SearchParams.get('page') || '1')
-
-    const [CardId, setCardId] = useState(SearchParams.get('card') || '')
+    const [pageNumber, changePage] = useState(searchParams.get('page') || '1')
+    const [CardId, setCardId] = useState(searchParams.get('card') || '')
     const { planets } = useAppSelector((state) => state.planetReducer)
-    useEffect(() => {
-        // Получаем текущие параметры
-        const currentParams = new URLSearchParams(SearchParams)
 
-        // Создаем новые параметры на основе текущих
-        const newParams = new URLSearchParams(SearchParams)
+    // Use the RTK Query hook to fetch data
+    const { data: planetList, isLoading } = useGetPlanetsQuery({
+        search: searchText,
+        page: Number(pageNumber),
+        perPage: 10,
+    })
+
+    useEffect(() => {
+        const newParams = new URLSearchParams(searchParams)
         newParams.set('page', pageNumber)
-        if (CardId !== '' && String(location) === '/details') {
+        if (CardId && location.pathname === '/details') {
             newParams.set('card', CardId)
         }
-
-        // Если параметры изменились, вызываем setSearchParams
-        if (newParams.toString() !== currentParams.toString()) {
+        if (newParams.toString() !== searchParams.toString()) {
             setSearchParams(newParams)
         }
+    }, [pageNumber, CardId, location, searchParams, setSearchParams])
 
-        const fetchData = async () => {
-            setIsLoading(true)
-            try {
-                const results = await getPlanets(
-                    searchText,
-                    10,
-                    JSON.parse(pageNumber)
-                )
-                setPlanetList(results)
-            } catch (error) {
-                console.error('Failed to fetch data:', error)
-            } finally {
-                setIsLoading(false)
-            }
-        }
-
-        fetchData()
-    }, [
-        searchText,
-        pageNumber,
-        CardId,
-        setSearchParams,
-        SearchParams,
-        location,
-    ])
+    // Call updateSearchParams when page or card id changes
 
     function nextPage() {
-        if (planetList?.next !== null) {
-            console.log(planetList?.next)
+        if (planetList?.next) {
             changePage(String(Number(pageNumber) + 1))
-            console.log(pageNumber)
             localStorage.removeItem('prevSearchText')
         }
     }
 
     function previousPage() {
-        if (planetList?.previous !== null) {
+        if (planetList?.previous) {
             changePage(String(Number(pageNumber) - 1))
             localStorage.removeItem('prevSearchText')
         }
@@ -100,7 +72,7 @@ export default function CardList({ searchText }: { searchText: string }) {
                     <button onClick={nextPage}>Next Page</button>
                 </div>
             </div>
-            {planets.length > 0 ? <FlyoutElement></FlyoutElement> : <></>}
+            {planets.length > 0 && <FlyoutElement />}
         </ErrorBoundary>
     )
 }
