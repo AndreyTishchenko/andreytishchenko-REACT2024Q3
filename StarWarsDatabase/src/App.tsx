@@ -5,20 +5,26 @@ import React from 'react'
 import { Route, Routes } from 'react-router'
 import NotFound from './pages/NotFound'
 import DetailsComponent from './components/DetailsComponent/DetailsComponent'
+import { Provider } from 'react-redux'
+import { setupStore } from './store/store'
+
+const store = setupStore()
 function App(): React.ReactNode {
     return (
         <>
-            <ErrorBoundary>
-                <Routes>
-                    <Route path="/" element={<MainPage />}>
-                        <Route
-                            path="/details"
-                            element={<DetailsComponent />}
-                        ></Route>
-                    </Route>
-                    <Route path="*" element={<NotFound />}></Route>
-                </Routes>
-            </ErrorBoundary>
+            <Provider store={store}>
+                <ErrorBoundary>
+                    <Routes>
+                        <Route path="/" element={<MainPage />}>
+                            <Route
+                                path="/details"
+                                element={<DetailsComponent />}
+                            ></Route>
+                        </Route>
+                        <Route path="*" element={<NotFound />}></Route>
+                    </Routes>
+                </ErrorBoundary>
+            </Provider>
         </>
     )
 }
