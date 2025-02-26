@@ -2,7 +2,6 @@ import Header from '../components/header/Header'
 import Main from '../components/main/Main'
 import Footer from '../components/footer/Footer'
 import useSearchQuery from '../hooks/myCustomHook'
-// import { useSearchParams } from 'react-router';
 
 export default function MainPage() {
     const [SearchText, ChangeSearchText] = useSearchQuery('SearchText', '')

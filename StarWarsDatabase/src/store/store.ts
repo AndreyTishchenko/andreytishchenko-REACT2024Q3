@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import PlanetReducer from './reducers/PlanetsSlice'
-import { swapiApi } from './reducers/APiCalls' // adjust the path as needed
+import { swapiApi } from './reducers/APiCalls'
 
 const rootReducer = combineReducers({
     planetReducer: PlanetReducer,

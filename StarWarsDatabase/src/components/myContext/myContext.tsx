@@ -5,7 +5,6 @@ interface MyContextType {
     updateValue: (newValue: boolean) => void
 }
 
-// Create the context with a default value (optional)
 export const MyContext = createContext<MyContextType | undefined>(undefined)
 
 interface MyProviderProps {

@@ -1,13 +1,10 @@
-// SearchForm.test.tsx
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import SearchForm from '../components/SearchForm/Searchform'
 import { MyContext } from '../components/myContext/myContext'
 
-// Dummy onSearchChange callback to pass as prop
 const dummyOnSearchChange = vi.fn()
 
-// Helper to render SearchForm wrapped in MyContext.Provider
 const renderWithContext = (
     contextValue: {
         value: boolean
@@ -39,12 +36,10 @@ describe('SearchForm component', () => {
     })
 
     it('loads saved search text from localStorage', async () => {
-        // Save a value in localStorage wrapped in quotes as expected by the component
         localStorage.setItem('SearchText', '"SavedSearch"')
         renderWithContext({ value: false, updateValue: vi.fn() })
         const input = screen.getByRole('textbox')
 
-        // Wait for useEffect to update the state
         await waitFor(() => expect(input).toHaveValue('SavedSearch'))
     })
 
@@ -61,7 +56,6 @@ describe('SearchForm component', () => {
         const input = screen.getByRole('textbox')
         fireEvent.change(input, { target: { value: 'Test Search' } })
 
-        // Retrieve the form element and simulate form submission
         const formElement = document.querySelector('form')
         if (!formElement) throw new Error('Form not found')
         fireEvent.submit(formElement)
@@ -80,7 +74,6 @@ describe('SearchForm component', () => {
     })
 
     it('throws an error if context is not provided', () => {
-        // Suppress console.error to keep test output clean
         const consoleError = console.error
         console.error = vi.fn()
 

@@ -14,7 +14,6 @@ export default function CardList({ searchText }: { searchText: string }) {
     const [CardId, setCardId] = useState(searchParams.get('card') || '')
     const { planets } = useAppSelector((state) => state.planetReducer)
 
-    // Use the RTK Query hook to fetch data
     const { data: planetList, isLoading } = useGetPlanetsQuery({
         search: searchText,
         page: Number(pageNumber),
@@ -31,8 +30,6 @@ export default function CardList({ searchText }: { searchText: string }) {
             setSearchParams(newParams)
         }
     }, [pageNumber, CardId, location, searchParams, setSearchParams])
-
-    // Call updateSearchParams when page or card id changes
 
     function nextPage() {
         if (planetList?.next) {

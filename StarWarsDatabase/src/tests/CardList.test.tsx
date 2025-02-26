@@ -1,16 +1,12 @@
-// CardList.test.tsx
-import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { MemoryRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import CardList from '../components/CardsList/CradsList' // adjust the path as needed
+import CardList from '../components/CardsList/CradsList'
 import { MyContext } from '../components/myContext/myContext'
 import { setupStore } from '../store/store'
 import * as reduxHooks from '../hooks/redux'
 import { Planet } from '../components/main/type'
-// ---
-// Stub child components to simplify testing
 vi.mock('../components/Card/Card', () => ({
     default: ({ planet }: { planet: Planet }) => (
         <div data-testid="card">{planet.name}</div>
@@ -21,15 +17,11 @@ vi.mock('../components/FlyoutElement/FlyoutElement', () => ({
     default: () => <div data-testid="flyout">Flyout Element</div>,
 }))
 
-// ---
-// Mock the RTK Query hook from your API calls file
 import * as apiCalls from '../store/reducers/APiCalls'
 const mockUseGetPlanetsQuery = (returnValue: Planet) => {
     vi.spyOn(apiCalls, 'useGetPlanetsQuery').mockReturnValue(returnValue)
 }
 
-// ---
-// Dummy planet for testing
 const dummyPlanet = {
     name: 'Tatooine',
     diameter: '10465',
@@ -55,7 +47,6 @@ describe('CardList component', () => {
         store = setupStore()
     })
 
-    // Helper to render CardList with necessary providers
     const renderComponent = (searchText = 'test') => {
         return render(
             <Provider store={store}>
@@ -102,19 +93,15 @@ describe('CardList component', () => {
             },
         })
 
-        // Simulate redux state with an empty "planets" array
         vi.spyOn(reduxHooks, 'useAppSelector').mockReturnValue({ planets: [] })
 
         renderComponent()
 
-        // Wait for the card to render
         await waitFor(() => {
             expect(screen.getByTestId('card')).toHaveTextContent('Tatooine')
         })
-        // Check that the navigation buttons are present
         expect(screen.getByText(/Previous Page/i)).toBeInTheDocument()
         expect(screen.getByText(/Next Page/i)).toBeInTheDocument()
-        // Since redux state "planets" is empty, FlyoutElement should not render
         expect(screen.queryByTestId('flyout')).not.toBeInTheDocument()
     })
 
@@ -129,7 +116,6 @@ describe('CardList component', () => {
             },
         })
 
-        // Simulate redux state with one planet to trigger FlyoutElement
         vi.spyOn(reduxHooks, 'useAppSelector').mockReturnValue({
             planets: [dummyPlanet],
         })
@@ -152,7 +138,6 @@ describe('CardList component', () => {
         })
         vi.spyOn(reduxHooks, 'useAppSelector').mockReturnValue({ planets: [] })
 
-        // Spy on localStorage.removeItem
         const removeItemSpy = vi.spyOn(
             window.localStorage.__proto__,
             'removeItem'
@@ -160,7 +145,6 @@ describe('CardList component', () => {
 
         renderComponent()
 
-        // Wait for navigation buttons to appear
         await waitFor(() => {
             expect(screen.getByText(/Next Page/i)).toBeInTheDocument()
             expect(screen.getByText(/Previous Page/i)).toBeInTheDocument()

@@ -1,11 +1,9 @@
-// src/tests/MyProvider.test.tsx
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect } from 'vitest'
 import { MyProvider, MyContext } from '../components/myContext/myContext'
 
-// A dummy consumer component that uses the MyContext value.
 const ConsumerComponent = () => {
     const context = useContext(MyContext)
     if (!context) {

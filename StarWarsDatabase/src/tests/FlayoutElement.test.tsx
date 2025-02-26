@@ -1,5 +1,3 @@
-// src/tests/FlyoutElement.test.tsx
-import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
@@ -8,7 +6,6 @@ import { MyContext } from '../components/myContext/myContext'
 import { planetsSlice } from '../store/reducers/PlanetsSlice'
 import * as reduxHooks from '../hooks/redux'
 
-// Dummy planets array for testing
 const dummyPlanets = [
     {
         id: '1',
@@ -50,7 +47,6 @@ describe('FlyoutElement component', () => {
     let mockDispatch: ReturnType<typeof vi.fn>
 
     beforeEach(() => {
-        // Set up our mocks for redux hooks
         mockDispatch = vi.fn()
         vi.spyOn(reduxHooks, 'useAppDispatch').mockReturnValue(mockDispatch)
         vi.spyOn(reduxHooks, 'useAppSelector').mockReturnValue({
@@ -105,15 +101,11 @@ describe('FlyoutElement component', () => {
     })
 
     it('triggers file download when "Download All" button is clicked', async () => {
-        // Store the original document.createElement function.
         const originalCreateElement = document.createElement.bind(document)
-        // Create a real anchor element to serve as our fake anchor.
         const fakeAnchor = originalCreateElement('a')
-        // Override its methods with spies.
         fakeAnchor.setAttribute = vi.fn()
         fakeAnchor.click = vi.fn()
 
-        // Spy on document.createElement so that when 'a' is requested, we return our fake anchor.
         const createElementSpy = vi
             .spyOn(document, 'createElement')
             .mockImplementation((tagName: string) => {
@@ -135,13 +127,9 @@ describe('FlyoutElement component', () => {
         const downloadButton = screen.getByText(/Download All/i)
         await userEvent.click(downloadButton)
 
-        // Check that an anchor element was created.
         expect(createElementSpy).toHaveBeenCalledWith('a')
-        // Check that the anchor was appended to the document body.
         expect(appendChildSpy).toHaveBeenCalledWith(fakeAnchor)
-        // Check that the anchor's click method was called.
         expect(fakeAnchor.click).toHaveBeenCalled()
-        // Check that the anchor was removed from the document body.
         expect(removeChildSpy).toHaveBeenCalledWith(fakeAnchor)
     })
 

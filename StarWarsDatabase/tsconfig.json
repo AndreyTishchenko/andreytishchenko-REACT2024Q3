@@ -5,7 +5,7 @@
         { "path": "./tsconfig.node.json" }
     ],
     "compilerOptions": {
-        "types": ["vitest/globals"], // Ensures Vitest globals (e.g., `describe`, `test`) are recognized
+        "types": ["vitest/globals"],
         "module": "ESNext",
         "target": "ESNext",
         "moduleResolution": "Node",

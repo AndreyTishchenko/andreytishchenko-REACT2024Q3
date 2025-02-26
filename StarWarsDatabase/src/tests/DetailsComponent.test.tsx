@@ -1,5 +1,3 @@
-// src/tests/DetailsComponent.test.tsx
-import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { MemoryRouter } from 'react-router-dom'
@@ -7,7 +5,6 @@ import DetailsComponent from '../components/DetailsComponent/DetailsComponent'
 import { MyContext } from '../components/myContext/myContext'
 import * as apiCalls from '../store/reducers/APiCalls'
 
-// Define a Planet interface that matches your dummy data
 interface Planet {
     name: string
     diameter: string
@@ -25,13 +22,11 @@ interface Planet {
     edited: string
 }
 
-// Define the expected return type of useGetPlanetQuery
 interface UseGetPlanetQueryResult {
     data?: Planet
     isLoading: boolean
 }
 
-// We'll mock useNavigate from react-router-dom to check navigation
 const mockNavigate = vi.fn()
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom')
@@ -47,7 +42,6 @@ describe('DetailsComponent', () => {
     })
 
     it('renders loading state when isLoading is true', () => {
-        // Mock useGetPlanetQuery to simulate a loading state.
         vi.spyOn(apiCalls, 'useGetPlanetQuery').mockReturnValue({
             data: undefined,
             isLoading: true,
@@ -91,7 +85,6 @@ describe('DetailsComponent', () => {
 
         render(
             <MemoryRouter initialEntries={['/?card=1']}>
-                {/* Pass context.value true so the modal gets the "light" class */}
                 <MyContext.Provider
                     value={{ value: true, updateValue: vi.fn() }}
                 >
@@ -100,7 +93,6 @@ describe('DetailsComponent', () => {
             </MemoryRouter>
         )
 
-        // Wait for the modal element to be present.
         await waitFor(() => {
             const modal = document.getElementById('modal')
             expect(modal).toBeInTheDocument()
@@ -151,17 +143,14 @@ describe('DetailsComponent', () => {
             </MemoryRouter>
         )
 
-        // Wait until modal is rendered.
         await waitFor(() => {
             expect(document.getElementById('modal')).toBeInTheDocument()
         })
 
-        // Create an element outside the modal to simulate an outside click.
         const outsideElement = document.createElement('div')
         document.body.appendChild(outsideElement)
         fireEvent.mouseDown(outsideElement)
 
-        // The handleClickOutside callback should call navigate('/') when click is outside.
         expect(mockNavigate).toHaveBeenCalledWith('/')
         document.body.removeChild(outsideElement)
     })
@@ -175,7 +164,6 @@ describe('DetailsComponent', () => {
         expect(() =>
             render(
                 <MemoryRouter initialEntries={['/?card=1']}>
-                    {/* Omit MyContext.Provider to trigger error */}
                     <DetailsComponent />
                 </MemoryRouter>
             )
