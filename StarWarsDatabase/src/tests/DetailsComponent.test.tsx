@@ -22,11 +22,6 @@ interface Planet {
     edited: string
 }
 
-interface UseGetPlanetQueryResult {
-    data?: Planet
-    isLoading: boolean
-}
-
 const mockNavigate = vi.fn()
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom')
@@ -45,7 +40,8 @@ describe('DetailsComponent', () => {
         vi.spyOn(apiCalls, 'useGetPlanetQuery').mockReturnValue({
             data: undefined,
             isLoading: true,
-        } as UseGetPlanetQueryResult)
+            refetch: vi.fn(),
+        } as ReturnType<typeof apiCalls.useGetPlanetQuery>)
 
         render(
             <MemoryRouter initialEntries={['/?card=1']}>
@@ -81,7 +77,8 @@ describe('DetailsComponent', () => {
         vi.spyOn(apiCalls, 'useGetPlanetQuery').mockReturnValue({
             data: dummyPlanet,
             isLoading: false,
-        } as UseGetPlanetQueryResult)
+            refetch: vi.fn(),
+        } as ReturnType<typeof apiCalls.useGetPlanetQuery>)
 
         render(
             <MemoryRouter initialEntries={['/?card=1']}>
@@ -131,7 +128,8 @@ describe('DetailsComponent', () => {
         vi.spyOn(apiCalls, 'useGetPlanetQuery').mockReturnValue({
             data: dummyPlanet,
             isLoading: false,
-        } as UseGetPlanetQueryResult)
+            refetch: vi.fn(),
+        } as ReturnType<typeof apiCalls.useGetPlanetQuery>)
 
         render(
             <MemoryRouter initialEntries={['/?card=1']}>
@@ -159,7 +157,8 @@ describe('DetailsComponent', () => {
         vi.spyOn(apiCalls, 'useGetPlanetQuery').mockReturnValue({
             data: undefined,
             isLoading: true,
-        } as UseGetPlanetQueryResult)
+            refetch: vi.fn(),
+        } as ReturnType<typeof apiCalls.useGetPlanetQuery>)
 
         expect(() =>
             render(

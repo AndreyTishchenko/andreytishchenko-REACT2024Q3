@@ -18,10 +18,13 @@ vi.mock('../components/FlyoutElement/FlyoutElement', () => ({
 }))
 
 import * as apiCalls from '../store/reducers/APiCalls'
-const mockUseGetPlanetsQuery = (returnValue: Planet) => {
-    vi.spyOn(apiCalls, 'useGetPlanetsQuery').mockReturnValue(returnValue)
+const mockUseGetPlanetsQuery = (
+    returnValue: Partial<ReturnType<typeof apiCalls.useGetPlanetsQuery>>
+) => {
+    vi.spyOn(apiCalls, 'useGetPlanetsQuery').mockReturnValue(
+        returnValue as ReturnType<typeof apiCalls.useGetPlanetsQuery>
+    )
 }
-
 const dummyPlanet = {
     name: 'Tatooine',
     diameter: '10465',
