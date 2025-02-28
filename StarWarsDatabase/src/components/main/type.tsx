@@ -3,6 +3,7 @@ export interface StateType {
 }
 
 export interface Planet {
+    id?: string
     name: string
     diameter: string
     rotation_period: string

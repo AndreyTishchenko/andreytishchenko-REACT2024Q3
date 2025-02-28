@@ -10,7 +10,6 @@ const Main = React.memo(function ({
 }): React.ReactNode {
     const location = useLocation()
     const isDetailsPage = location.pathname === '/details'
-    console.log('newRender')
     return (
         <>
             <main

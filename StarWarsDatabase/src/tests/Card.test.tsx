@@ -5,25 +5,9 @@ import { MemoryRouter } from 'react-router-dom'
 import Card from '../components/Card/Card'
 import { MyContext } from '../components/myContext/myContext'
 import { planetsSlice } from '../store/reducers/PlanetsSlice'
-
+import { Planet } from '../components/main/type'
 import * as reduxHooks from '../hooks/redux'
-interface Planet {
-    id: string
-    name: string
-    diameter: string
-    rotation_period: string
-    orbital_period: string
-    gravity: string
-    population: string
-    climate: string
-    terrain: string
-    surface_water: string
-    residents: string[]
-    films: string[]
-    url: string
-    created: string
-    edited: string
-}
+
 const dummyPlanet = {
     name: 'Tatooine',
     diameter: '10465',

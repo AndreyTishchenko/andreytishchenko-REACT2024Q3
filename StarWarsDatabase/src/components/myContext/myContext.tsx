@@ -1,16 +1,7 @@
-import { createContext, useState, ReactNode } from 'react'
-
-interface MyContextType {
-    value: boolean
-    updateValue: (newValue: boolean) => void
-}
+import { createContext, useState } from 'react'
+import { MyContextType, MyProviderProps } from './types'
 
 export const MyContext = createContext<MyContextType | undefined>(undefined)
-
-interface MyProviderProps {
-    children: ReactNode
-}
-
 export const MyProvider = ({ children }: MyProviderProps) => {
     const [value, setValue] = useState(false)
 

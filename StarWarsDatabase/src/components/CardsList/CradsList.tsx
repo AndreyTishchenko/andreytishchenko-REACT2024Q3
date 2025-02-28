@@ -6,6 +6,7 @@ import FlyoutElement from '../FlyoutElement/FlyoutElement'
 import { useAppSelector } from '../../hooks/redux'
 import { useGetPlanetsQuery } from '../../store/reducers/APiCalls'
 import { MyContext } from '../myContext/myContext'
+import Pagination from '../Pagination/Pagination'
 
 export default function CardList({ searchText }: { searchText: string }) {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -31,20 +32,6 @@ export default function CardList({ searchText }: { searchText: string }) {
         }
     }, [pageNumber, CardId, location, searchParams, setSearchParams])
 
-    function nextPage() {
-        if (planetList?.next) {
-            changePage(String(Number(pageNumber) + 1))
-            localStorage.removeItem('prevSearchText')
-        }
-    }
-
-    function previousPage() {
-        if (planetList?.previous) {
-            changePage(String(Number(pageNumber) - 1))
-            localStorage.removeItem('prevSearchText')
-        }
-    }
-
     if (isLoading) {
         return <Loading />
     }
@@ -65,10 +52,11 @@ export default function CardList({ searchText }: { searchText: string }) {
                         />
                     ))}
                 </div>
-                <div className="navigation">
-                    <button onClick={previousPage}>Previous Page</button>
-                    <button onClick={nextPage}>Next Page</button>
-                </div>
+                <Pagination
+                    planetList={planetList}
+                    changePage={changePage}
+                    pageNumber={pageNumber}
+                />
             </div>
             {planets.length > 0 && <FlyoutElement />}
         </ErrorBoundary>

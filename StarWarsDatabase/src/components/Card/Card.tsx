@@ -36,7 +36,6 @@ export default function Card(props: {
         } else {
             Dispatch(deletePlanet(getId(props.planet.url)))
         }
-        console.log(planets)
     }
 
     return (

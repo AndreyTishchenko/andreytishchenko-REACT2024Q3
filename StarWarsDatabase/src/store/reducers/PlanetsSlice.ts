@@ -1,22 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
-export interface Planet {
-    id: string
-    name: string
-    diameter: string
-    rotation_period: string
-    orbital_period: string
-    gravity: string
-    population: string
-    climate: string
-    terrain: string
-    surface_water: string
-    residents: string[]
-    films: string[]
-    url: string
-    created: string
-    edited: string
-}
+import { Planet } from '../../components/main/type'
 
 export interface PlanetsState {
     planets: Planet[]

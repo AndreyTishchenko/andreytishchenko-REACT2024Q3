@@ -17,9 +17,7 @@ export default function FlyoutElement() {
 
     function deleteAll() {
         planets.forEach((planet) => {
-            console.log(planet + 'this Planet Will be deleted')
-            Dispatch(deletePlanet(planet.id))
-            console.log(planets)
+            Dispatch(deletePlanet(planet.id!))
         })
     }
 
