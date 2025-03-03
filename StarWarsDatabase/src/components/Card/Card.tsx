@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Planet } from '../main/type'
+import { Planet } from '../../Types/PlanetType'
 import './Card.css'
 import { planetsSlice } from '../../store/reducers/PlanetsSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks/redux'

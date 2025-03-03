@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import Result from '../../API/interface'
-import { Planet } from '../../components/main/type'
+import { Planet } from '../../Types/PlanetType'
 
 export const swapiApi = createApi({
     reducerPath: 'swapiApi',

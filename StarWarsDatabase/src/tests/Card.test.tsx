@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom'
 import Card from '../components/Card/Card'
 import { MyContext } from '../components/myContext/myContext'
 import { planetsSlice } from '../store/reducers/PlanetsSlice'
-import { Planet } from '../components/main/type'
+import { Planet } from '../Types/PlanetType'
 import * as reduxHooks from '../hooks/redux'
 
 const dummyPlanet = {

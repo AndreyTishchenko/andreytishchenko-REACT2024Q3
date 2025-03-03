@@ -6,7 +6,7 @@ import CardList from '../components/CardsList/CradsList'
 import { MyContext } from '../components/myContext/myContext'
 import { setupStore } from '../store/store'
 import * as reduxHooks from '../hooks/redux'
-import { Planet } from '../components/main/type'
+import { Planet } from '../Types/PlanetType'
 vi.mock('../components/Card/Card', () => ({
     default: ({ planet }: { planet: Planet }) => (
         <div data-testid="card">{planet.name}</div>

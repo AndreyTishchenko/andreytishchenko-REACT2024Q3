@@ -1,7 +1,3 @@
-export interface StateType {
-    url: string
-}
-
 export interface Planet {
     id?: string
     name: string

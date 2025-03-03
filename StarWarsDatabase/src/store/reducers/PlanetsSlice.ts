@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Planet } from '../../components/main/type'
+import { Planet } from '../../Types/PlanetType'
 
 export interface PlanetsState {
     planets: Planet[]
