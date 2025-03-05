@@ -7,7 +7,7 @@ import ErrorBoundary from '../components/error/error'
 
 const store = setupStore()
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps): JSX.Element {
     return (
         <Provider store={store}>
             <ErrorBoundary>

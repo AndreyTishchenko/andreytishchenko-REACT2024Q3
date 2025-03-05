@@ -1,31 +1,38 @@
+// src/components/DetailsComponent/DetailsComponent.tsx
 import { useCallback, useContext, useEffect } from 'react'
-import { useSearchParams, useNavigate } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import { useGetPlanetQuery } from '../../store/reducers/APiCalls'
 import style from './style.module.css'
 import { MyContext } from '../myContext/myContext'
 
-export default function DetailsComponent() {
-    const [searchParams] = useSearchParams()
-    const PlanetID = searchParams.get('card') || ''
+export default function DetailsComponent(): JSX.Element {
+    const router = useRouter()
+    const PlanetID =
+        typeof router.query.card === 'string' ? router.query.card : ''
     const { data: planet, isLoading } = useGetPlanetQuery(PlanetID)
-    const navigate = useNavigate()
 
     const context = useContext(MyContext)
     if (!context) {
         throw new Error('Error')
     }
-
     const { value } = context
 
     const handleClickOutside = useCallback(
         (event: MouseEvent) => {
             const modal = document.getElementById('modal')
             if (modal && !modal.contains(event.target as Node)) {
-                navigate('/')
+                // Собираем новый объект query без undefined и без параметра "card"
+                const newQuery: { [key: string]: string | string[] } = {}
+                for (const key in router.query) {
+                    const val = router.query[key]
+                    if (val !== undefined && key !== 'card') {
+                        newQuery[key] = val
+                    }
+                }
+                router.push({ pathname: '/', query: newQuery })
             }
-            searchParams.delete('card')
         },
-        [navigate, searchParams]
+        [router]
     )
 
     useEffect(() => {
@@ -38,7 +45,9 @@ export default function DetailsComponent() {
     return (
         <>
             {isLoading ? (
-                <p color={value ? 'rgb(0, 183, 255)' : ''}>Loading...</p>
+                <p style={{ color: value ? 'rgb(0, 183, 255)' : undefined }}>
+                    Loading...
+                </p>
             ) : (
                 <div
                     id="modal"

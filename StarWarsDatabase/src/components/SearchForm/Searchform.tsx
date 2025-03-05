@@ -26,7 +26,7 @@ export default function SearchForm(props: SearchChangeProps) {
     function handleSubmit(event: FormEvent) {
         event.preventDefault()
         const { onSearchChange } = props
-        localStorage.setItem('SearchText', searchText)
+        localStorage.setItem('SearchText', JSON.stringify(searchText))
         if (onSearchChange) {
             onSearchChange(searchText)
         }

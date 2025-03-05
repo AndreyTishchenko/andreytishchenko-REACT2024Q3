@@ -1,14 +1,16 @@
-// pages/index.tsx
 import Layout from '../components/Layout/Layout'
 import Main from '../components/main/Main'
+import DetailsComponent from '../components/DetailsComponent/DetailsComponent'
 import useSearchQuery from '../hooks/myCustomHook'
 
-export default function MainPage(): JSX.Element {
+export default function DetailsPage(): JSX.Element {
     const SearchText = useSearchQuery('SearchText', '')[0]
 
     return (
         <Layout>
-            <Main SearchText={SearchText} />
+            <Main SearchText={SearchText}>
+                <DetailsComponent />
+            </Main>
         </Layout>
     )
 }
