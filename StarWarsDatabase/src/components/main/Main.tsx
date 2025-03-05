@@ -1,28 +1,28 @@
-import React from 'react'
-import './main.css'
-import './main.css'
+// src/components/Main/Main.tsx
+import React, { ReactNode } from 'react'
 import CardList from '../CardsList/CradsList'
-import { Outlet, useLocation } from 'react-router'
-const Main = React.memo(function ({
-    SearchText,
-}: {
+import { useRouter } from 'next/router'
+
+interface MainProps {
     SearchText: string
-}): React.ReactNode {
-    const location = useLocation()
-    const isDetailsPage = location.pathname === '/details'
+    children?: ReactNode
+}
+
+const Main = React.memo(function Main({ SearchText, children }: MainProps) {
+    const router = useRouter()
+    const isDetailsPage = router.pathname === '/details'
+
     return (
-        <>
-            <main
-                style={{
-                    display: 'flex',
-                    justifyContent: isDetailsPage ? 'space-between' : 'center',
-                    width: '97.2%',
-                }}
-            >
-                <CardList searchText={SearchText}></CardList>
-                <Outlet />
-            </main>
-        </>
+        <main
+            style={{
+                display: 'flex',
+                justifyContent: isDetailsPage ? 'space-between' : 'center',
+                width: '97.2%',
+            }}
+        >
+            <CardList searchText={SearchText} />
+            {children}
+        </main>
     )
 })
 

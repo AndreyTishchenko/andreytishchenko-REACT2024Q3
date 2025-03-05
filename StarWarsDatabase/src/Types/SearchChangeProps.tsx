@@ -1,3 +1,3 @@
-export default interface PropsType {
+export default interface SearchChangeProps {
     onSearchChange: (value: string) => void
 }

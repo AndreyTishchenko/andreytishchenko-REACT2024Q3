@@ -1,4 +1,4 @@
-import { Planet } from '../Types/PlanetType'
+import { Planet } from './PlanetType'
 export default interface Result {
     count: number
     next: null | string

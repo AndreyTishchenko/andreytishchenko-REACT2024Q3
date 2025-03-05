@@ -1,6 +1,6 @@
 import React from 'react'
 import Props from './type'
-import './error.css'
+import styles from './error.module.css'
 export default class ErrorBoundary extends React.Component<
     Props,
     { hasError: boolean }
@@ -18,7 +18,7 @@ export default class ErrorBoundary extends React.Component<
         if (this.state.hasError) {
             return (
                 <>
-                    <div className="errorDiv">
+                    <div className={styles.errorDiv}>
                         <h1>Something went wrong.</h1>;
                     </div>
                 </>

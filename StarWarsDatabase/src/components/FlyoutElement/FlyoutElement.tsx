@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks/redux'
 import { planetsSlice } from '../../store/reducers/PlanetsSlice'
 import { MyContext } from '../myContext/myContext'
-import './style.css'
+import styles from './style.module.css'
 export default function FlyoutElement() {
     const { planets } = useAppSelector((state) => state.planetReducer)
     const { deletePlanet } = planetsSlice.actions
@@ -40,7 +40,7 @@ export default function FlyoutElement() {
 
     return (
         <div>
-            <h3 className={value ? 'light' : ''}>
+            <h3 className={`${value ? styles.light : ''}`}>
                 Choosen Elements: {planets.length}
             </h3>
             <button onClick={deleteAll}>Unselect All</button>

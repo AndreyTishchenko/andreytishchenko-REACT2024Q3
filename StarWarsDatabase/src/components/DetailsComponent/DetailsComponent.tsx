@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useGetPlanetQuery } from '../../store/reducers/APiCalls'
-import './style.css'
+import style from './style.module.css'
 import { MyContext } from '../myContext/myContext'
 
 export default function DetailsComponent() {
@@ -40,7 +40,10 @@ export default function DetailsComponent() {
             {isLoading ? (
                 <p color={value ? 'rgb(0, 183, 255)' : ''}>Loading...</p>
             ) : (
-                <div id="modal" className={'modal' + (value ? ' light' : '')}>
+                <div
+                    id="modal"
+                    className={`${style.modal} ${value ? style.light : ''}`}
+                >
                     <h2>{planet?.name}</h2>
                     <p>Diameter: {planet?.diameter}</p>
                     <p>Rotation Period: {planet?.rotation_period}</p>

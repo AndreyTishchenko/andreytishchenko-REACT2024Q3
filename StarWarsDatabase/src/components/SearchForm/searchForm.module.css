@@ -16,13 +16,13 @@
     color: rgb(0, 183, 255);
 }
 
-form {
+.form {
     display: flex;
     align-items: center;
 }
 
 .SubmitInput {
-    background-image: url('../../assets/DarthWader.svg');
+    background-image: url('../../../public/assets/DarthWader.svg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -37,7 +37,7 @@ form {
 }
 
 .SubmitInput.light {
-    background-image: url('../../assets/GalaxyEmpire.svg');
+    background-image: url('../../../public/assets/GalaxyEmpire.svg');
     border: rgb(0, 183, 255) 1px solid;
     color: rgb(0, 183, 255);
     background-color: white;

@@ -1,0 +1,36 @@
+#root {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    color: red;
+}
+
+body {
+    background-image: url('https://www.shutterstock.com/shutterstock/videos/268234/thumb/1.jpg?ip=x480');
+}
+
+.StarWarsLogo {
+    width: 200px;
+    height: 112.5px;
+}
+
+.grid-div {
+    margin-top: 10px;
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(3, 350px);
+}
+
+@media (max-width: 1096px) and (min-width: 744px) {
+    .grid-div {
+        grid-template-columns: repeat(2, 350px);
+    }
+}
+
+@media (max-width: 744px) {
+    .grid-div {
+        grid-template-columns: repeat(1, 350px);
+    }
+}

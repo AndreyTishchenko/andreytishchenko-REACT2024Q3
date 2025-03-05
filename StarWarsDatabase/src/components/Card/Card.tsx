@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { Planet } from '../../Types/PlanetType'
-import './Card.css'
+import styles from './Card.module.css'
 import { planetsSlice } from '../../store/reducers/PlanetsSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks/redux'
 import { useContext } from 'react'
@@ -40,9 +40,9 @@ export default function Card(props: {
 
     return (
         <Link
-            className={'card' + (value ? ' light' : '')}
+            href={`/details?card=${getId(props.planet.url)}`}
+            className={`${styles.card} ${value ? styles.light : ''}`}
             id={getId(props.planet.url)}
-            to={`/details?card=${getId(props.planet.url)}`}
             style={{ position: 'relative' }}
         >
             <h3>{props.planet.name}</h3>

@@ -1,4 +1,4 @@
-header {
+.header {
     height: 168.75px;
     width: 97%;
     display: flex;
@@ -7,7 +7,7 @@ header {
     border: red solid 2px;
 }
 
-header.Light {
+.header.Light {
     border-color: rgb(0, 183, 255);
 }
 

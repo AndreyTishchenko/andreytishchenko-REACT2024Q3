@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import { useSearchParams, useLocation } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import ErrorBoundary from '../error/error'
 import Card from '../Card/Card'
 import FlyoutElement from '../FlyoutElement/FlyoutElement'
@@ -9,10 +9,14 @@ import { MyContext } from '../myContext/myContext'
 import Pagination from '../Pagination/Pagination'
 
 export default function CardList({ searchText }: { searchText: string }) {
-    const [searchParams, setSearchParams] = useSearchParams()
-    const location = useLocation()
-    const [pageNumber, changePage] = useState(searchParams.get('page') || '1')
-    const [CardId, setCardId] = useState(searchParams.get('card') || '')
+    const router = useRouter()
+
+    const initialPage = router.query.page ? String(router.query.page) : '1'
+    const initialCard = router.query.card ? String(router.query.card) : ''
+
+    const [pageNumber, changePage] = useState(initialPage)
+    const [cardId, setCardId] = useState(initialCard)
+
     const { planets } = useAppSelector((state) => state.planetReducer)
 
     const { data: planetList, isLoading } = useGetPlanetsQuery({
@@ -22,15 +26,23 @@ export default function CardList({ searchText }: { searchText: string }) {
     })
 
     useEffect(() => {
-        const newParams = new URLSearchParams(searchParams)
-        newParams.set('page', pageNumber)
-        if (CardId && location.pathname === '/details') {
-            newParams.set('card', CardId)
+        // Cast router.query to a flexible type so that we can add more properties
+        const currentQuery = router.query as { [key: string]: string }
+        const newQuery: { [key: string]: string } = {
+            ...currentQuery,
+            page: pageNumber,
         }
-        if (newParams.toString() !== searchParams.toString()) {
-            setSearchParams(newParams)
+
+        if (cardId && router.pathname === '/details') {
+            newQuery.card = cardId
+        } else {
+            delete newQuery.card
         }
-    }, [pageNumber, CardId, location, searchParams, setSearchParams])
+
+        router.push({ pathname: router.pathname, query: newQuery }, undefined, {
+            shallow: true,
+        })
+    }, [pageNumber, cardId, router])
 
     if (isLoading) {
         return <Loading />
@@ -68,12 +80,13 @@ function Loading() {
     if (!context) {
         throw new Error('Error')
     }
-
     const { value } = context
 
     return (
         <div>
-            <h2 color={value ? 'rgb(0, 183, 255)' : ''}>Loading...</h2>
+            <h2 style={{ color: value ? 'rgb(0, 183, 255)' : '' }}>
+                Loading...
+            </h2>
         </div>
     )
 }

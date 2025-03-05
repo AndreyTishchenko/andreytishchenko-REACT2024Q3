@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import Result from '../../API/interface'
+import Result from '../../Types/ResultType'
 import { Planet } from '../../Types/PlanetType'
 
 export const swapiApi = createApi({

@@ -1,4 +1,4 @@
-import Result from '../../API/interface'
+import Result from '../../Types/ResultType'
 
 export default function Pagination(props: {
     planetList: Result

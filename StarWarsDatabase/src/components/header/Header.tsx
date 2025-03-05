@@ -1,10 +1,10 @@
 import { useContext, useState } from 'react'
 import SearchForm from '../SearchForm/Searchform'
-import PropsType from '../../Types/FunctionalPropsType'
-import './header.css'
+import SearchChangeProps from '../../Types/SearchChangeProps'
 import { MyContext } from '../myContext/myContext'
+import styles from './header.module.css'
 
-export default function Header(props: PropsType) {
+export default function Header(props: SearchChangeProps) {
     const [isError, setError] = useState(false)
     const context = useContext(MyContext)
     if (!context) {
@@ -22,7 +22,7 @@ export default function Header(props: PropsType) {
     }
 
     return (
-        <header className={value ? 'Light' : ''}>
+        <header className={`${styles.header} ${value ? styles.Light : ''}`}>
             <div>
                 <button onClick={Crash}>Crash System</button>
             </div>

@@ -1,9 +1,9 @@
 import { ChangeEvent, FormEvent, useState, useEffect, useContext } from 'react'
-import PropsType from '../../Types/FunctionalPropsType'
-import './searchForm.css'
+import SearchChangeProps from '../../Types/SearchChangeProps'
+import styles from './searchForm.module.css'
 import { MyContext } from '../myContext/myContext'
 
-export default function SearchForm(props: PropsType) {
+export default function SearchForm(props: SearchChangeProps) {
     const [searchText, setSearchText] = useState('')
 
     const context = useContext(MyContext)
@@ -33,15 +33,15 @@ export default function SearchForm(props: PropsType) {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={styles.form}>
             <input
                 value={searchText}
                 onChange={handleChange}
-                className={'SearchInput' + (value ? ' light' : '')}
+                className={`${styles.SearchInput} ${value ? styles.light : ''}`}
             />
             <button
                 type="submit"
-                className={'SubmitInput' + (value ? ' light' : '')}
+                className={`${styles.SubmitInput} ${value ? styles.light : ''}`}
             ></button>
         </form>
     )
