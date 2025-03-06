@@ -1,15 +1,21 @@
-// src/components/DetailsComponent/DetailsComponent.tsx
+'use client'
+
 import { useCallback, useContext, useEffect } from 'react'
-import { useRouter } from 'next/router'
+import { useSearchParams, useRouter } from 'next/navigation'
 import { useGetPlanetQuery } from '../../store/reducers/APiCalls'
-import style from './style.module.css'
 import { MyContext } from '../myContext/myContext'
+import style from './style.module.css'
 
 export default function DetailsComponent(): JSX.Element {
+    const searchParams = useSearchParams()
     const router = useRouter()
-    const PlanetID =
-        typeof router.query.card === 'string' ? router.query.card : ''
-    const { data: planet, isLoading } = useGetPlanetQuery(PlanetID)
+
+    const { data: planet, isLoading } = useGetPlanetQuery(
+        searchParams.get('card')!,
+        {
+            skip: !searchParams.get('card'),
+        }
+    )
 
     const context = useContext(MyContext)
     if (!context) {
@@ -21,15 +27,7 @@ export default function DetailsComponent(): JSX.Element {
         (event: MouseEvent) => {
             const modal = document.getElementById('modal')
             if (modal && !modal.contains(event.target as Node)) {
-                // Собираем новый объект query без undefined и без параметра "card"
-                const newQuery: { [key: string]: string | string[] } = {}
-                for (const key in router.query) {
-                    const val = router.query[key]
-                    if (val !== undefined && key !== 'card') {
-                        newQuery[key] = val
-                    }
-                }
-                router.push({ pathname: '/', query: newQuery })
+                router.push('/')
             }
         },
         [router]
@@ -41,6 +39,10 @@ export default function DetailsComponent(): JSX.Element {
             document.removeEventListener('mousedown', handleClickOutside)
         }
     }, [handleClickOutside])
+
+    if (!searchParams.get('card')) {
+        return <div />
+    }
 
     return (
         <>

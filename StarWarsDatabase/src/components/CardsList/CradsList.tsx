@@ -1,5 +1,7 @@
+'use client'
+
 import { useContext, useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
+import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 import ErrorBoundary from '../error/error'
 import Card from '../Card/Card'
 import FlyoutElement from '../FlyoutElement/FlyoutElement'
@@ -10,12 +12,12 @@ import Pagination from '../Pagination/Pagination'
 
 export default function CardList({ searchText }: { searchText: string }) {
     const router = useRouter()
+    const searchParams = useSearchParams()
+    const pathname = usePathname()
 
-    const initialPage = router.query.page ? String(router.query.page) : '1'
-    const initialCard = router.query.card ? String(router.query.card) : ''
+    const initialPage = searchParams.get('page') || '1'
 
     const [pageNumber, changePage] = useState(initialPage)
-    const [cardId, setCardId] = useState(initialCard)
 
     const { planets } = useAppSelector((state) => state.planetReducer)
 
@@ -26,23 +28,14 @@ export default function CardList({ searchText }: { searchText: string }) {
     })
 
     useEffect(() => {
-        // Cast router.query to a flexible type so that we can add more properties
-        const currentQuery = router.query as { [key: string]: string }
-        const newQuery: { [key: string]: string } = {
-            ...currentQuery,
-            page: pageNumber,
+        const currentSearch = new URLSearchParams(window.location.search)
+        const params = new URLSearchParams(currentSearch.toString())
+        params.set('page', pageNumber)
+        const newQueryString = params.toString()
+        if (currentSearch.toString() !== newQueryString) {
+            router.push(`${pathname}?${newQueryString}`)
         }
-
-        if (cardId && router.pathname === '/details') {
-            newQuery.card = cardId
-        } else {
-            delete newQuery.card
-        }
-
-        router.push({ pathname: router.pathname, query: newQuery }, undefined, {
-            shallow: true,
-        })
-    }, [pageNumber, cardId, router])
+    }, [pageNumber, pathname, router])
 
     if (isLoading) {
         return <Loading />
@@ -57,11 +50,7 @@ export default function CardList({ searchText }: { searchText: string }) {
             <div className="CardList">
                 <div className="grid-div">
                     {planetList.results.map((planet, index) => (
-                        <Card
-                            planet={planet}
-                            key={index}
-                            SetCardId={setCardId}
-                        />
+                        <Card planet={planet} key={index} />
                     ))}
                 </div>
                 <Pagination
@@ -84,7 +73,7 @@ function Loading() {
 
     return (
         <div>
-            <h2 style={{ color: value ? 'rgb(0, 183, 255)' : '' }}>
+            <h2 style={{ color: value ? 'rgb(0, 183, 255)' : undefined }}>
                 Loading...
             </h2>
         </div>

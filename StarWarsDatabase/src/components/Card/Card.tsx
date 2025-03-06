@@ -5,10 +5,7 @@ import { planetsSlice } from '../../store/reducers/PlanetsSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks/redux'
 import { useContext } from 'react'
 import { MyContext } from '../myContext/myContext'
-export default function Card(props: {
-    planet: Planet
-    SetCardId: React.Dispatch<React.SetStateAction<string>>
-}): React.ReactNode {
+export default function Card(props: { planet: Planet }): React.ReactNode {
     const { planets } = useAppSelector((state) => state.planetReducer)
     const { addPlanet, deletePlanet } = planetsSlice.actions
     const Dispatch = useAppDispatch()

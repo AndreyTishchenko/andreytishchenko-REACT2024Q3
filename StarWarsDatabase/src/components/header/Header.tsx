@@ -1,3 +1,4 @@
+'use client'
 import { useContext, useState } from 'react'
 import SearchForm from '../SearchForm/Searchform'
 import SearchChangeProps from '../../Types/SearchChangeProps'

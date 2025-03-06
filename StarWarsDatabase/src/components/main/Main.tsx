@@ -1,16 +1,20 @@
-// src/components/Main/Main.tsx
+'use client'
+
 import React, { ReactNode } from 'react'
 import CardList from '../CardsList/CradsList'
-import { useRouter } from 'next/router'
+import { usePathname } from 'next/navigation'
 
 interface MainProps {
     SearchText: string
     children?: ReactNode
 }
 
-const Main = React.memo(function Main({ SearchText, children }: MainProps) {
-    const router = useRouter()
-    const isDetailsPage = router.pathname === '/details'
+const Main = React.memo(function Main({
+    SearchText,
+    children,
+}: MainProps): JSX.Element {
+    const pathname = usePathname()
+    const isDetailsPage = pathname === '/details'
 
     return (
         <main

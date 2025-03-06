@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useState } from 'react'
 
 export default function useSearchQuery(key: string, initialValue = '') {
@@ -6,11 +8,12 @@ export default function useSearchQuery(key: string, initialValue = '') {
             const storedQuery = localStorage.getItem(key)
             return storedQuery ? JSON.parse(storedQuery) : initialValue
         }
+        return initialValue
     })
 
     useEffect(() => {
         localStorage.setItem(key, JSON.stringify(searchQuery))
     }, [key, searchQuery])
 
-    return [searchQuery, setSearchQuery]
+    return [searchQuery, setSearchQuery] as const
 }
