@@ -11,7 +11,6 @@ const UncontrolledForm: React.FC = () => {
   const navigate = useNavigate();
   const countries = useSelector((state: RootState) => state.form.countries);
 
-  // Refs for form fields
   const nameRef = useRef<HTMLInputElement>(null);
   const ageRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -24,7 +23,6 @@ const UncontrolledForm: React.FC = () => {
 
   const [errors, setErrors] = useState<Partial<Record<keyof FormSchemaType, string>>>({});
 
-  // File to base64 conversion
   const fileToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();

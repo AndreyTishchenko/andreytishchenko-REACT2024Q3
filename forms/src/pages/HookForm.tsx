@@ -21,7 +21,6 @@ const HookForm: React.FC = () => {
     mode: 'onChange',
   });
 
-  // File to base64 conversion
   const fileToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();

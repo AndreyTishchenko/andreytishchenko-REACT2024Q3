@@ -26,7 +26,6 @@ export const formSchema = z
         if (!value) return true;
         
         let file: File | undefined;
-        // If value is a FileList (as in React Hook Form), extract the first file.
         if (value instanceof FileList) {
           if (value.length === 0) return true;
           file = value[0];
