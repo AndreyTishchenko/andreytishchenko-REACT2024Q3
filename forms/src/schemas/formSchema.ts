@@ -23,9 +23,18 @@ export const formSchema = z
     picture: z
       .any()
       .refine((value) => {
-        // Accept if no file is provided
-        if (!value || (Array.isArray(value) && value.length === 0)) return true;
-        const file = Array.isArray(value) ? value[0] : value;
+        if (!value) return true;
+        
+        let file: File | undefined;
+        // If value is a FileList (as in React Hook Form), extract the first file.
+        if (value instanceof FileList) {
+          if (value.length === 0) return true;
+          file = value[0];
+        } else if (value instanceof File) {
+          file = value;
+        }
+        if (!file) return true;
+        
         const validTypes = ['image/jpeg', 'image/png'];
         return file.size <= 1024 * 1024 && validTypes.includes(file.type);
       }, { message: 'Invalid file: must be JPEG or PNG and under 1MB' })

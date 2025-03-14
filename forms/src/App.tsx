@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import Main from './pages/MainPage';
 import UncontrolledForm from './pages/UncontrolledForm';
-// import HookForm from './pages/HookForm';
+import HookForm from './pages/HookForm';
 
 const App: React.FC = () => {
   return (
@@ -15,7 +15,7 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/uncontrolled" element={<UncontrolledForm />} />
-        {/* <Route path="/hook-form" element={<HookForm />} /> */}
+        <Route path="/hook-form" element={<HookForm />} />
       </Routes>
     </div>
   );
