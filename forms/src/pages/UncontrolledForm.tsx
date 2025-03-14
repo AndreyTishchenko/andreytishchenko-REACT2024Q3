@@ -1,21 +1,17 @@
-import React, { useRef, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { addData } from "../store/formSlice";
-import { useNavigate } from "react-router-dom";
-import { formSchema } from "../schemas/formSchema";
-
-interface FormErrors {
-  [key: string]: string;
-}
+import React, { useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addSubmission } from '../store/slices/formSlice';
+import { useNavigate } from 'react-router-dom';
+import { RootState } from '../store/store';
+import { formSchema, FormSchemaType } from '../schemas/formSchema';
+import { ZodError } from 'zod';
 
 const UncontrolledForm: React.FC = () => {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const countries = useSelector((state: RootState) => state.form.countries);
 
-  // Get countries from Redux
-  const countries = useAppSelector((state) => state.countries.countries);
-
-  // Refs for inputs
+  // Refs for form fields
   const nameRef = useRef<HTMLInputElement>(null);
   const ageRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -26,140 +22,135 @@ const UncontrolledForm: React.FC = () => {
   const pictureRef = useRef<HTMLInputElement>(null);
   const countryRef = useRef<HTMLInputElement>(null);
 
-  const [errors, setErrors] = useState<FormErrors>({});
+  const [errors, setErrors] = useState<Partial<Record<keyof FormSchemaType, string>>>({});
 
-  // Helper: Convert File to Base64
-  const fileToBase64 = (file: File): Promise<string> =>
-    new Promise((resolve, reject) => {
+  // File to base64 conversion
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
     });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const name = nameRef.current?.value || "";
-    const age = ageRef.current?.value || "";
-    const email = emailRef.current?.value || "";
-    const password = passwordRef.current?.value || "";
-    const confirmPassword = confirmPasswordRef.current?.value || "";
-    const gender = genderRef.current?.value || "";
-    const terms = termsRef.current?.checked || false;
-    const country = countryRef.current?.value || "";
-
-    let picture = "";
-    if (pictureRef.current?.files && pictureRef.current.files[0]) {
-      const file = pictureRef.current.files[0];
-      const allowedTypes = ["image/png", "image/jpeg"];
-      if (!allowedTypes.includes(file.type)) {
-        setErrors((prev) => ({ ...prev, picture: "Only PNG and JPEG files are allowed" }));
-        return;
-      }
-      const maxSize = 2 * 1024 * 1024;
-      if (file.size > maxSize) {
-        setErrors((prev) => ({ ...prev, picture: "File size must be under 2MB" }));
-        return;
-      }
-      try {
-        picture = await fileToBase64(file);
-      } catch (error) {
-        setErrors((prev) => ({ ...prev, picture: "Failed to process picture" }));
-        return;
-      }
-    }
-
     const formData = {
-      name,
-      age,
-      email,
-      password,
-      confirmPassword,
-      gender,
-      terms,
-      picture,
-      country,
+      name: nameRef.current?.value,
+      age: ageRef.current?.value,
+      email: emailRef.current?.value,
+      password: passwordRef.current?.value,
+      confirmPassword: confirmPasswordRef.current?.value,
+      gender: genderRef.current?.value,
+      terms: termsRef.current?.checked,
+      picture: pictureRef.current?.files && pictureRef.current.files[0],
+      country: countryRef.current?.value,
     };
 
-    const result = formSchema.safeParse(formData);
-    if (!result.success) {
-      const fieldErrors: FormErrors = {};
-      result.error.errors.forEach((err) => {
-        if (err.path.length > 0) {
-          fieldErrors[err.path[0] as string] = err.message;
-        }
-      });
-      setErrors(fieldErrors);
-      return;
-    }
+    try {
+      const validatedData = formSchema.parse(formData);
+      setErrors({});
 
-    setErrors({});
-    dispatch(addData({ ...result.data, timestamp: Date.now() }));
-    navigate("/");
+      let pictureBase64: string | null = null;
+      if (validatedData.picture) {
+        pictureBase64 = await fileToBase64(validatedData.picture);
+      }
+
+      const submission = {
+        name: validatedData.name,
+        age: validatedData.age,
+        email: validatedData.email,
+        password: validatedData.password,
+        gender: validatedData.gender,
+        terms: validatedData.terms,
+        picture: pictureBase64,
+        country: validatedData.country,
+      };
+
+      dispatch(addSubmission(submission));
+      navigate('/');
+    } catch (err: unknown) {
+      if (err instanceof ZodError) {
+        const errorMap: Partial<Record<keyof FormSchemaType, string>> = {};
+        err.errors.forEach((error) => {
+          errorMap[error.path[0] as keyof FormSchemaType] = error.message;
+        });
+        setErrors(errorMap);
+      }
+    }
   };
 
   return (
     <div>
       <h1>Uncontrolled Form</h1>
-      <form onSubmit={handleSubmit} noValidate>
+      <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">Name:</label>
-          <input id="name" type="text" ref={nameRef} />
-          {errors.name && <p style={{ color: "red" }}>{errors.name}</p>}
+          <input type="text" id="name" ref={nameRef} />
+          {errors.name && <div style={{ color: 'red' }}>{errors.name}</div>}
         </div>
+  
         <div>
           <label htmlFor="age">Age:</label>
-          <input id="age" type="number" ref={ageRef} />
-          {errors.age && <p style={{ color: "red" }}>{errors.age}</p>}
+          <input type="number" id="age" ref={ageRef} />
+          {errors.age && <div style={{ color: 'red' }}>{errors.age}</div>}
         </div>
+  
         <div>
           <label htmlFor="email">Email:</label>
-          <input id="email" type="email" ref={emailRef} />
-          {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
+          <input type="email" id="email" ref={emailRef} />
+          {errors.email && <div style={{ color: 'red' }}>{errors.email}</div>}
         </div>
+  
         <div>
           <label htmlFor="password">Password:</label>
-          <input id="password" type="password" ref={passwordRef} />
-          {errors.password && <p style={{ color: "red" }}>{errors.password}</p>}
+          <input type="password" id="password" ref={passwordRef} />
+          {errors.password && <div style={{ color: 'red' }}>{errors.password}</div>}
         </div>
+  
         <div>
           <label htmlFor="confirmPassword">Confirm Password:</label>
-          <input id="confirmPassword" type="password" ref={confirmPasswordRef} />
-          {errors.confirmPassword && <p style={{ color: "red" }}>{errors.confirmPassword}</p>}
+          <input type="password" id="confirmPassword" ref={confirmPasswordRef} />
+          {errors.confirmPassword && <div style={{ color: 'red' }}>{errors.confirmPassword}</div>}
         </div>
+  
         <div>
           <label htmlFor="gender">Gender:</label>
           <select id="gender" ref={genderRef}>
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
+            <option value="">Select...</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
           </select>
-          {errors.gender && <p style={{ color: "red" }}>{errors.gender}</p>}
+          {errors.gender && <div style={{ color: 'red' }}>{errors.gender}</div>}
         </div>
+  
         <div>
           <label htmlFor="terms">
-            <input id="terms" type="checkbox" ref={termsRef} />
-            Accept Terms and Conditions
+            <input type="checkbox" id="terms" ref={termsRef} /> Accept Terms and Conditions
           </label>
-          {errors.terms && <p style={{ color: "red" }}>{errors.terms}</p>}
+          {errors.terms && <div style={{ color: 'red' }}>{errors.terms}</div>}
         </div>
+  
         <div>
           <label htmlFor="picture">Upload Picture:</label>
-          <input id="picture" type="file" accept="image/png, image/jpeg" ref={pictureRef} />
-          {errors.picture && <p style={{ color: "red" }}>{errors.picture}</p>}
+          <input type="file" id="picture" ref={pictureRef} accept="image/jpeg,image/png" />
+          {errors.picture && <div style={{ color: 'red' }}>{errors.picture}</div>}
         </div>
+  
         <div>
           <label htmlFor="country">Country:</label>
-          <input id="country" type="text" ref={countryRef} list="countryList" />
-          <datalist id="countryList">
-            {countries.map((country) => (
-              <option key={country} value={country} />
+          <input list="countries" id="country" ref={countryRef} />
+          <datalist id="countries">
+            {countries.map((country, index) => (
+              <option key={index} value={country} />
             ))}
           </datalist>
-          {errors.country && <p style={{ color: "red" }}>{errors.country}</p>}
+          {errors.country && <div style={{ color: 'red' }}>{errors.country}</div>}
         </div>
+  
         <button type="submit">Submit</button>
       </form>
     </div>

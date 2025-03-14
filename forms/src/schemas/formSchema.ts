@@ -1,38 +1,40 @@
-// src/schemas/formSchema.ts
-import { z } from "zod";
-
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/;
+import { z } from 'zod';
 
 export const formSchema = z
   .object({
     name: z
-      .string({ required_error: "Name is required" })
-      .min(1, "Name is required")
-      .refine((val) => /^[A-Z]/.test(val), {
-        message: "Name must start with an uppercase letter",
-      }),
-    age: z.preprocess(
-      (a) => Number(a),
-      z.number({ invalid_type_error: "Age must be a number" }).nonnegative("Age must be a non-negative number")
-    ),
-    email: z.string().email("Invalid email address"),
+      .string()
+      .nonempty('Name is required')
+      .regex(/^[A-Z]/, 'Name must start with an uppercase letter'),
+    age: z.preprocess((val) => Number(val), z.number().min(0, 'Age must be non-negative')),
+    email: z.string().nonempty('Email is required').email('Invalid email'),
     password: z
       .string()
-      .min(8, "Password must be at least 8 characters")
-      .refine((val) => passwordRegex.test(val), {
-        message:
-          "Password must include at least one number, one uppercase letter, one lowercase letter, and one special character",
-      }),
-    confirmPassword: z.string(),
-    gender: z.enum(["Male", "Female", "Other"], { invalid_type_error: "Select a gender" }),
-    terms: z.literal(true, {
-      errorMap: () => ({ message: "You must accept terms and conditions" }),
+      .nonempty('Password is required')
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).+$/,
+        'Password must include 1 uppercase, 1 lowercase, 1 number, and 1 special character'
+      ),
+    confirmPassword: z.string().nonempty('Confirm your password'),
+    gender: z.string().nonempty('Gender is required'),
+    terms: z.boolean().refine((val) => val === true, {
+      message: 'You must accept the terms and conditions',
     }),
-    // We expect picture as a base64 string after processing
-    picture: z.string().nonempty("Picture is required"),
-    country: z.string().min(1, "Country is required"),
+    picture: z
+      .any()
+      .refine((value) => {
+        // Accept if no file is provided
+        if (!value || (Array.isArray(value) && value.length === 0)) return true;
+        const file = Array.isArray(value) ? value[0] : value;
+        const validTypes = ['image/jpeg', 'image/png'];
+        return file.size <= 1024 * 1024 && validTypes.includes(file.type);
+      }, { message: 'Invalid file: must be JPEG or PNG and under 1MB' })
+      .optional(),
+    country: z.string().nonempty('Country is required'),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-});
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  });
+
+export type FormSchemaType = z.infer<typeof formSchema>;
