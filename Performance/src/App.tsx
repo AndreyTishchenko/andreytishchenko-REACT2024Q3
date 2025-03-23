@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import CountryTable from './components/CountryTable';
 import Search from './components/searchComponent';
 import { fetchCountries } from './components/countryService';
@@ -23,49 +23,46 @@ function App(): React.ReactNode {
         if (storedSelectedCountries) {
             setSelectedCountries(JSON.parse(storedSelectedCountries));
         }
+        fetchCountries().then(setCountries);
     }, []);
 
-    useEffect(() => {
-        fetchCountries().then((data) => setCountries(data));
-    }, []);
+    const regions = useMemo(() => Array.from(new Set(countries.map((c) => c.region))).sort(), [countries]);
 
-    const regions = Array.from(new Set(countries.map((country) => country.region))).sort();
+    const sortedCountries = useMemo(() => {
+        return [...countries].sort((a, b) => {
+            if (a[sortKey as keyof Country] < b[sortKey as keyof Country]) return sortOrder === 'asc' ? -1 : 1;
+            if (a[sortKey as keyof Country] > b[sortKey as keyof Country]) return sortOrder === 'asc' ? 1 : -1;
+            return 0;
+        });
+    }, [countries, sortKey, sortOrder]);
 
-    const sortedCountries = [...countries].sort((a, b) => {
-        if (a[sortKey as keyof Country] < b[sortKey as keyof Country]) return sortOrder === 'asc' ? -1 : 1;
-        if (a[sortKey as keyof Country] > b[sortKey as keyof Country]) return sortOrder === 'asc' ? 1 : -1;
-        return 0;
-    });
+    const filteredCountries = useMemo(() => {
+        return sortedCountries.filter(
+            (country) =>
+                country.name.toLowerCase().includes(search.toLowerCase()) &&
+                (selectedRegion === '' || country.region === selectedRegion)
+        );
+    }, [sortedCountries, search, selectedRegion]);
 
-    const filteredCountries = sortedCountries.filter((country) =>
-        country.name.toLowerCase().includes(search.toLowerCase()) &&
-        (selectedRegion === '' || country.region === selectedRegion)
-    );
+    const handleSort = useCallback((key: string) => {
+        setSortOrder((prev) => (sortKey === key ? (prev === 'asc' ? 'desc' : 'asc') : 'asc'));
+        setSortKey(key);
+    }, [sortKey]);
 
-    const handleSort = (key: string) => {
-        if (sortKey === key) {
-            setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'));
-        } else {
-            setSortKey(key);
-            setSortOrder('asc');
-        }
-    };
-
-    const handleRegionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleRegionChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedRegion(e.target.value);
-    };
+    }, []);
 
-    const toggleCountrySelection = (countryName: string) => {
-        const updatedSelectedCountries = selectedCountries.includes(countryName)
-            ? selectedCountries.filter((name) => name !== countryName)
-            : [...selectedCountries, countryName];
-
-        setSelectedCountries(updatedSelectedCountries);
-        localStorage.setItem('selectedCountries', JSON.stringify(updatedSelectedCountries));
-    };
+    const toggleCountrySelection = useCallback((countryName: string) => {
+        setSelectedCountries((prev) => {
+            const updated = prev.includes(countryName) ? prev.filter((name) => name !== countryName) : [...prev, countryName];
+            localStorage.setItem('selectedCountries', JSON.stringify(updated));
+            return updated;
+        });
+    }, []);
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px' }}>
+        <div style={{ padding: '20px' }}>
             <Search value={search} onChange={(e) => setSearch(e.target.value)} />
             <CountryTable
                 countries={filteredCountries}
@@ -78,7 +75,6 @@ function App(): React.ReactNode {
                 selectedRegion={selectedRegion}
                 handleRegionChange={handleRegionChange}
             />
-
         </div>
     );
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import CountryRow from './CountryRow';
 
 interface Country {
     name: string;
@@ -19,7 +20,7 @@ interface CountryTableProps {
     handleRegionChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-const CountryTable: React.FC<CountryTableProps> = ({
+const CountryTable: React.FC<CountryTableProps> = React.memo(({
     countries,
     handleSort,
     sortKey,
@@ -58,30 +59,17 @@ const CountryTable: React.FC<CountryTableProps> = ({
                 </tr>
             </thead>
             <tbody>
-                {countries.map((country) => {
-                    const isSelected = selectedCountries.includes(country.name);
-                    return (
-                        <tr
-                            key={country.name}
-                            onClick={() => toggleCountrySelection(country.name)}
-                            style={{
-                                borderBottom: '1px solid blue',
-                                backgroundColor: isSelected ? '#d0ebff' : 'transparent',
-                                cursor: 'pointer',
-                            }}
-                        >
-                            <td style={{ border: '1px solid blue', padding: '5px' }}>
-                                <img src={country.flag} alt={country.name} style={{ width: '30px' }} />
-                            </td>
-                            <td style={{ border: '1px solid blue', padding: '5px' }}>{country.name}</td>
-                            <td style={{ border: '1px solid blue', padding: '5px' }}>{country.population.toLocaleString()}</td>
-                            <td style={{ border: '1px solid blue', padding: '5px' }}>{country.region}</td>
-                        </tr>
-                    );
-                })}
+                {countries.map((country) => (
+                    <CountryRow
+                        key={country.name}
+                        country={country}
+                        isSelected={selectedCountries.includes(country.name)}
+                        toggleCountrySelection={toggleCountrySelection}
+                    />
+                ))}
             </tbody>
         </table>
     );
-};
+});
 
 export default CountryTable;
