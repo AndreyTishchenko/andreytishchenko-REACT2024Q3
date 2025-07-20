@@ -1,7 +1,16 @@
-import { defineConfig } from 'vite'
+// vite.config.ts
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 
-// https://vitejs.dev/config/
 export default defineConfig({
     plugins: [react()],
+    test: {
+        globals: true,
+        environment: 'jsdom',
+        setupFiles: './src/setupTests.ts',
+        coverage: {
+            reporter: ['text', 'html', 'lcov'],
+            exclude: ['src/setupTests.ts', '.eslintrc.cjs', 'vite.config.ts'], // optionally exclude setup file
+        },
+    },
 })
