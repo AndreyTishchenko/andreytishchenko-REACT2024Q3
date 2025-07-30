@@ -6,7 +6,7 @@ export async function getPlanets(
     pageNumber: number
 ): Promise<Result | null> {
     const response = await fetch(
-        `https://swapi.dev/api/planets/?search=${searchValue}&limit=${perPage}&page=${pageNumber}`
+        `https://www.swapi.tech/api/planets/?search=${searchValue}&limit=${perPage}&page=${pageNumber}`
     )
     if (response.ok) {
         const json = await response.json()
