@@ -1,0 +1,3 @@
+cd StarWarsDatabase
+npm run lint
+npm run format
