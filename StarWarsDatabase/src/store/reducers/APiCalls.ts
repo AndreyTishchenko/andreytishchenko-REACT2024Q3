@@ -4,7 +4,7 @@ import { Planet } from '../../components/main/type'
 
 export const swapiApi = createApi({
     reducerPath: 'swapiApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'https://swapi.dev/api/' }),
+    baseQuery: fetchBaseQuery({ baseUrl: 'https://www.swapi.tech/api/' }),
 
     endpoints: (builder) => ({
         getPlanets: builder.query<
