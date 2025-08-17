@@ -7,13 +7,11 @@ export default function Pagination(props: {
 }) {
     function nextPage() {
         if (props.planetList?.next !== null) {
-            console.log(props.planetList?.next)
             localStorage.setItem(
                 'CurrentPage',
                 String(Number(props.pageNumber) + 1)
             )
             props.changePage(localStorage.getItem('CurrentPage') || '2')
-            console.log(props.pageNumber)
             localStorage.removeItem('prevSearchText')
         }
     }

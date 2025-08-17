@@ -8,9 +8,7 @@ export default async function Page({
 }) {
   const page = Number(searchParams.page ?? 1);
   const search = searchParams.search ?? "";
-  console.log(search)
 
   const planetList = await getPlanets(search, page, 10);
-  console.log(planetList)
   return <CardList planetList={planetList} />;
 }

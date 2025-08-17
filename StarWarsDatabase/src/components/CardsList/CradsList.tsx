@@ -34,7 +34,6 @@ export default function CardList({ searchText }: { searchText: string }) {
     if (isLoading) {
         return <Loading />
     }
-    console.log(planetList)
     if (!planetList || !planetList.results.length) {
         return <div>No planets found.</div>
     }

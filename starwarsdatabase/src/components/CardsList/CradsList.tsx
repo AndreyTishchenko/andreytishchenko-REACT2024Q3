@@ -25,7 +25,6 @@ export default function CardList({ planetList }: { planetList: Result }) {
     // if (isLoading) {
         // return <Loading />
     // }
-    console.log(planetList)
     if (!planetList || !planetList.result.length) {
         return <div>No planets found.</div>
     }

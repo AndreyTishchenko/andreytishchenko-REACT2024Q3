@@ -15,7 +15,6 @@ export default function RootLayout({
   details: ReactNode;
 }) {
   const hasDetails = !!details; // default.tsx в @details должен возвращать null
-  console.log(hasDetails)
   return (
     <html lang="en">
       <body>
