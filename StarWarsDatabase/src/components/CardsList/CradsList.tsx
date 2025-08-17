@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
 import { useSearchParams, useLocation } from 'react-router-dom'
-import ErrorBoundary from '../error/error'
 import Card from '../Card/Card'
 import FlyoutElement from '../FlyoutElement/FlyoutElement'
 import { useAppSelector } from '../../hooks/redux'
@@ -35,13 +34,13 @@ export default function CardList({ searchText }: { searchText: string }) {
     if (isLoading) {
         return <Loading />
     }
-
+    console.log(planetList)
     if (!planetList || !planetList.results.length) {
         return <div>No planets found.</div>
     }
 
     return (
-        <ErrorBoundary>
+        <>
             <div className="CardList">
                 <div className="grid-div">
                     {planetList.results.map((planet, index) => (
@@ -59,7 +58,7 @@ export default function CardList({ searchText }: { searchText: string }) {
                 />
             </div>
             {planets.length > 0 && <FlyoutElement />}
-        </ErrorBoundary>
+        </>
     )
 }
 

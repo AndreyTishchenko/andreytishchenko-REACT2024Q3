@@ -1,0 +1,19 @@
+.card {
+    width: 350px;
+    text-decoration: none;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.dark .card{
+    border: 1px red solid;
+    color: red;
+}
+
+.light .card {
+    border: 1px rgb(0, 183, 255) solid;
+    color: rgb(0, 183, 255);
+}
