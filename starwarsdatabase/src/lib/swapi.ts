@@ -20,7 +20,7 @@ export async function getPlanets(
   const raw = await res.json();
 
   // API может отдавать и `results`, и `result`
-  const items: [] = Array.isArray(raw.results)
+  const items: any[] = Array.isArray(raw.results)
     ? raw.results
     : Array.isArray(raw.result)
     ? raw.result
